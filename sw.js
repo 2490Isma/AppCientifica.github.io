@@ -1,4 +1,4 @@
-const CACHE_NAME = 'app-cientifica-v3'; // Pasamos a v3
+const CACHE_NAME = 'app-cientifica-v7'; // Pasamos a v3
 const ASSETS = [
   './',
   './index.html',
