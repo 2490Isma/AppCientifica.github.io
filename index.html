@@ -89,6 +89,16 @@
         #print-area { display: none; }
     </style>
 </head>
+    <script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('./sw.js')
+        .then(reg => console.log('Service Worker registrado', reg))
+        .catch(err => console.error('Error al registrar del Service Worker', err));
+    });
+  }
+</script>
+    
 <body>
 <div id="splash-screen">
     <img src="photo_2026-06-20_11-49-25.jpg" class="splash-img" alt="Escudo Policía Científica">
