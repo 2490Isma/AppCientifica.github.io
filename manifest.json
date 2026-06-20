@@ -1,6 +1,7 @@
 {
   "name": "App Científica",
   "short_name": "AppCientifica",
+  "description": "Aplicación de App Científica en GitHub Pages",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#ffffff",
