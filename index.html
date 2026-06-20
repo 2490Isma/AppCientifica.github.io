@@ -68,6 +68,7 @@
         .btn-wa { background-color: #25D366; color: white; padding: 16px; border: none; border-radius: 8px; font-weight: bold; width: 100%; margin-top: 20px; cursor: pointer; font-size: 1rem; text-transform: uppercase; }
         .btn-pdf { background-color: #d9534f; color: white; padding: 12px; border: none; border-radius: 8px; font-weight: bold; width: 100%; margin-top: 10px; cursor: pointer; font-size: 0.9rem; text-transform: uppercase; }
         .btn-word { background-color: #007bff; color: white; padding: 12px; border: none; border-radius: 8px; font-weight: bold; width: 100%; margin-top: 5px; cursor: pointer; font-size: 0.9rem; text-transform: uppercase; }
+        .btn-nube { background-color: #17a2b8; color: white; padding: 12px; border: none; border-radius: 8px; font-weight: bold; width: 100%; margin-top: 5px; cursor: pointer; font-size: 0.9rem; text-transform: uppercase; }
         .btn-reset { background-color: #f8f9fa; color: #d9534f; border: 1px solid #ccc; padding: 8px; border-radius: 4px; width: 100%; margin-top: 10px; font-size: 0.7rem; font-weight: bold;}
         .btn-tool { display: flex; align-items: center; justify-content: center; background: #e9ecef; border: 1px solid #ced4da; padding: 8px; border-radius: 4px; font-size: 0.65rem; font-weight: bold; cursor: pointer; flex: 1; text-align: center; }
         .btn-import { background-color: #007bff; color: white; padding: 12px; border: none; border-radius: 8px; font-weight: bold; width: 100%; margin-bottom: 15px; cursor: pointer; font-size: 0.9rem; text-transform: uppercase; }
@@ -80,7 +81,7 @@
         @media print {
             body { background: white; padding: 0; }
             #splash-screen, #app-content { display: none !important; }
-            .card, .btn-wa, .btn-pdf, .btn-word, .btn-reset, .historial, .color-grid, label, input, textarea, select, .btn-tool, .row, .btn-import { display: none !important; }
+            .card, .btn-wa, .btn-pdf, .btn-word, .btn-nube, .btn-reset, .historial, .color-grid, label, input, textarea, select, .btn-tool, .row, .btn-import { display: none !important; }
             #print-area { display: block !important; font-family: Arial, sans-serif; font-size: 12pt; line-height: 1.5; color: black; padding: 1.5cm; text-align: justify; }
             .campo-pdf { margin: 0 0 8pt 0; padding: 0; line-height: 1.5; text-align: justify; }
             .firma-contenedor { margin-top: 60px; display: flex; flex-direction: column; align-items: flex-end; }
@@ -169,6 +170,7 @@
         <div id="btn-pdf-container">
             <button class="btn-pdf" onclick="generarPDF()">📄 IMPRIMIR / DESCARGAR PDF</button>
             <button class="btn-word" onclick="exportarWord()">💾 GUARDAR FORMATO WORD</button>
+            <button class="btn-nube" id="btnNube" onclick="guardarEnNube()">☁️ GUARDAR EN LA NUBE</button>
         </div>
         <button class="btn-reset" onclick="confirm('¿Limpiar?') && location.reload()">🗑️ LIMPIAR TODO</button>
         <div class="historial">
@@ -179,6 +181,9 @@
 </div>
 <div id="print-area"></div>
 <script>
+    // ⚠️ PEGA AQUÍ ADENTRO TU ENLACE LARGO COPIADO DE GOOGLE APPS SCRIPT
+    const URL_MI_NUBE = "AQUÍ_PEGA_LA_URL_LARGA_QUE_COPIASTE_DE_GOOGLE"; 
+
     const deps = {
         "Jefatura de Policía de Seguridad Brandsen.": [
             "Estación de Policía Comunal Brandsen", "Destacamento Gomez", "Destacamento Jeppener", "Destacamento Altamirano", "Comando de Prevención Rural Brandsen", "Comisaria de la Mujer y la Familia Brandsen", "Destacamento Vial Brandsen", "Destacamento Vial Samborombon", "Subdelegación Departamental de Investigaciones Brandsen"
@@ -191,7 +196,7 @@
     const TEXTO_ACCIDENTOLOGIA = "*FASE PRECEDENTE:* \n*FASE DE CONTACTO:* \n*POSICIÓN FINAL:* \n*INDICIOS ACCIDENTOLÓGICOS:* \n*TIPO DE COLISIÓN:* ";
     const FIRMA_WA = "*FDO: CRIO MAYOR SIOME ARIEL. DELEGADO DEPARTAMENTAL POLICIA CIENTIFICA LA PLATA.-*";
     const FIRMA_DOCUMENTO_HTML = "Federico A. Betanzos<br>Subcomisario<br>Jefe Sección Pericial BRANDSEN";
-    // Manejo de la pantalla de carga
+    
     window.addEventListener('load', () => {
         const hoy = new Date().toISOString().split('T')[0];
         document.getElementById('fecha_hecho').value = hoy;
@@ -330,36 +335,9 @@
         const tituloLabor_Doc = "LABOR PERICIAL y EVIDENCIAS";
         return { car, dco, lef, fecha, fechaRaw: fechaVal, h_sol, h_sal, h_fin, vic, imp, seccional, ufi, lugar, gps, sin, sinBR, lab: labLimpia, tituloLabor_WA, tituloLabor_Doc };
     }
-    function generarPDF() {
-        const d = construirEstructuraCampos();
-        const htmlFinal = `
-            <div class="campo-pdf"><b>C.C.R. CENTRO</b></div>
-            <div class="campo-pdf"><b>D.D.P.C. LA PLATA - S.P.D BRANDSEN</b></div>
-            <div class="campo-pdf"><b>CARÁTULA:</b> ${d.car}</div>
-            <div class="campo-pdf"><b>FECHA:</b> ${d.fecha}</div>
-            <div class="campo-pdf"><b>DOC:</b> ${d.dco}</div>
-            <div class="campo-pdf"><b>LEF/ARA:</b> ${d.lef}</div>
-            <div class="campo-pdf"><b>HORA DE SOLICITUD:</b> ${d.h_sol}</div>
-            <div class="campo-pdf"><b>HORA DE SALIDA:</b> ${d.h_sal}</div>
-            <div class="campo-pdf"><b>HORA DE FINALIZACIÓN:</b> ${d.h_fin}</div>
-            <div class="campo-pdf"><b>VÍCTIMA:</b> ${d.vic}</div>
-            <div class="campo-pdf"><b>IMPUTADO:</b> ${d.imp}</div>
-            <div class="campo-pdf"><b>SECCIONAL ACTUANTE:</b> ${d.seccional}</div>
-            <div class="campo-pdf"><b>UFI INTERVINIENDO:</b> ${d.ufi}</div>
-            <div class="campo-pdf"><b>LUGAR DEL HECHO:</b> ${d.lugar}</div>
-            <div class="campo-pdf"><b>GPS:</b> ${d.gps}</div>
-            <div class="campo-pdf"><b>SÍNTESIS DEL HECHO:</b> ${d.sinBR}</div>
-            <br>
-            <div class="campo-pdf"><b>${d.tituloLabor_Doc}:</b><br>${d.lab}</div>
-            <div class="firma-contenedor"><div class="firma-bloque">${FIRMA_DOCUMENTO_HTML}</div></div>`;
-        document.getElementById('print-area').innerHTML = htmlFinal;
-        window.print();
-    }
-    function exportarWord() {
-        const d = construirEstructuraCampos();
-        const nombreArchivo = `Reporte_${d.lef || "S-LEF"}.html`;
-        
-        const contenidoHTML = `<!DOCTYPE html>
+    
+    function obtenerContenidoHTML(d) {
+        return `<!DOCTYPE html>
         <html>
         <head>
             <meta charset="utf-8">
@@ -394,11 +372,75 @@
             </div>
         </body>
         </html>`;
+    }
+
+    function generarPDF() {
+        const d = construirEstructuraCampos();
+        const htmlFinal = `
+            <div class="campo-pdf"><b>C.C.R. CENTRO</b></div>
+            <div class="campo-pdf"><b>D.D.P.C. LA PLATA - S.P.D BRANDSEN</b></div>
+            <div class="campo-pdf"><b>CARÁTULA:</b> ${d.car}</div>
+            <div class="campo-pdf"><b>FECHA:</b> ${d.fecha}</div>
+            <div class="campo-pdf"><b>DOC:</b> ${d.dco}</div>
+            <div class="campo-pdf"><b>LEF/ARA:</b> ${d.lef}</div>
+            <div class="campo-pdf"><b>HORA DE SOLICITUD:</b> ${d.h_sol}</div>
+            <div class="campo-pdf"><b>HORA DE SALIDA:</b> ${d.h_sal}</div>
+            <div class="campo-pdf"><b>HORA DE FINALIZACIÓN:</b> ${d.h_fin}</div>
+            <div class="campo-pdf"><b>VÍCTIMA:</b> ${d.vic}</div>
+            <div class="campo-pdf"><b>IMPUTADO:</b> ${d.imp}</div>
+            <div class="campo-pdf"><b>SECCIONAL ACTUANTE:</b> ${d.seccional}</div>
+            <div class="campo-pdf"><b>UFI INTERVINIENDO:</b> ${d.ufi}</div>
+            <div class="campo-pdf"><b>LUGAR DEL HECHO:</b> ${d.lugar}</div>
+            <div class="campo-pdf"><b>GPS:</b> ${d.gps}</div>
+            <div class="campo-pdf"><b>SÍNTESIS DEL HECHO:</b> ${d.sinBR}</div>
+            <br>
+            <div class="campo-pdf"><b>${d.tituloLabor_Doc}:</b><br>${d.lab}</div>
+            <div class="firma-contenedor"><div class="firma-bloque">${FIRMA_DOCUMENTO_HTML}</div></div>`;
+        document.getElementById('print-area').innerHTML = htmlFinal;
+        window.print();
+    }
+    
+    function exportarWord() {
+        const d = construirEstructuraCampos();
+        const nombreArchivo = `Reporte_${d.lef || "S-LEF"}.html`;
+        const contenidoHTML = obtenerContenidoHTML(d);
         
         const blob = new Blob([contenidoHTML], { type: 'text/html;charset=utf-8' });
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a'); a.href = url; a.download = nombreArchivo; document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
     }
+
+    async function guardarEnNube() {
+        if (URL_MI_NUBE === "AQUÍ_PEGA_LA_URL_LARGA_QUE_COPIASTE_DE_GOOGLE" || URL_MI_NUBE === "") {
+            alert("Error: Primero debes pegar la URL de tu Google Apps Script en la variable de la línea 170.");
+            return;
+        }
+
+        const d = construirEstructuraCampos();
+        const nombreArchivoFinal = `Reporte_${d.lef || "S-LEF"}.html`;
+        const contenidoHTML = obtenerContenidoHTML(d);
+        
+        const btn = document.getElementById('btnNube');
+        btn.innerText = "⏳ ENVIANDO A DRIVE...";
+        btn.disabled = true;
+
+        try {
+            await fetch(URL_MI_NUBE, {
+                method: 'POST',
+                mode: 'no-cors', 
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ nombreArchivo: nombreArchivoFinal, html: contenidoHTML })
+            });
+
+            alert("¡Subido con éxito! El reporte ya está guardado en tu carpeta de Google Drive.");
+        } catch (error) {
+            alert("Error de conexión al subir a la nube: " + error.message);
+        } finally {
+            btn.innerText = "☁️ GUARDAR EN LA NUBE";
+            btn.disabled = false;
+        }
+    }
+
     function enviar() {
         const checks = Array.from(document.querySelectorAll('#gridStickers input:checked')).map(c => c.value);
         const stickersStr = checks.join("") || "👮";
@@ -418,9 +460,6 @@
         storage.unshift(data);
         localStorage.setItem('hist_BRANDSEN_FINAL', JSON.stringify(storage.slice(0, 10)));
         dibujarHist();
-    }
-    function borderAlineado() {
-        // Corrección visual estética menor para centrar iconos de botones herramientas
     }
     function dibujarHist() {
         let s = JSON.parse(localStorage.getItem('hist_BRANDSEN_FINAL') || "[]");
