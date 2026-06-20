@@ -166,12 +166,18 @@
             <label id="lbl-labor">📑 LABOR PERICIAL y EVIDENCIAS</label>
             <textarea id="lab_des" rows="10"></textarea>
         </div>
+        
+        <!-- BOTONES PRINCIPALES FIJOS -->
         <button class="btn-wa" id="btnMainWA" onclick="enviar()">🚀 ENVIAR WHATSAPP</button>
+        <button class="btn-nube" id="btnNubeDirecto" onclick="guardarEnNube('btnNubeDirecto')">☁️ SUBIR NUBE</button>
+        
+        <!-- BOTONES SECUNDARIOS QUE SE ACTIVAN AL EDITAR -->
         <div id="btn-pdf-container">
             <button class="btn-pdf" onclick="generarPDF()">📄 IMPRIMIR / DESCARGAR PDF</button>
             <button class="btn-word" onclick="exportarWord()">💾 GUARDAR FORMATO WORD</button>
-            <button class="btn-nube" id="btnNube" onclick="guardarEnNube()">☁️ GUARDAR EN LA NUBE</button>
+            <button class="btn-nube" id="btnNube" onclick="guardarEnNube('btnNube')">☁️ SUBIR NUBE</button>
         </div>
+        
         <button class="btn-reset" onclick="confirm('¿Limpiar?') && location.reload()">🗑️ LIMPIAR TODO</button>
         <div class="historial">
             <strong>📋 REPORTES RECIENTES (PARA EDITAR):</strong>
@@ -181,8 +187,7 @@
 </div>
 <div id="print-area"></div>
 <script>
-    // ⚠️ CAMBIA ESTO POR LA URL LARGA QUE COPIASTE DE GOOGLE APPS SCRIPT
-    const URL_MI_NUBE = "TU_URL_DE_GOOGLE_APPS_SCRIPT_AQUI"; 
+    const URL_MI_NUBE = "https://script.google.com/macros/s/AKfycbxa9Fnm7sejvWjQZMrbgfFbTwZ2iOKtvqAhOXST86yswblbv12NUU89qsEv6pHCnnM/exec"; 
 
     const deps = {
         "Jefatura de Policía de Seguridad Brandsen.": [
@@ -410,9 +415,12 @@
         const a = document.createElement('a'); a.href = url; a.download = nombreArchivo; document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
     }
 
-    async function guardarEnNube() {
-        if (URL_MI_NUBE === "TU_URL_DE_GOOGLE_APPS_SCRIPT_AQUI" || URL_MI_NUBE === "") {
-            alert("Error: Primero debes pegar la URL de tu Google Apps Script en la variable de la línea 171.");
+    async function guardarEnNube(idBotonPresionado) {
+        const botonId = idBotonPresionado || 'btnNube';
+        const btn = document.getElementById(botonId);
+        
+        if (URL_MI_NUBE === "" || URL_MI_NUBE.includes("TU_URL_DE_GOOGLE")) {
+            alert("Error: Configura la URL válida de tu script de Google.");
             return;
         }
 
@@ -420,7 +428,7 @@
         const nombreArchivoFinal = `Reporte_${d.lef || "S-LEF"}.html`;
         const contenidoHTML = obtenerContenidoHTML(d);
         
-        const btn = document.getElementById('btnNube');
+        const textoOriginal = btn.innerText;
         btn.innerText = "⏳ ENVIANDO A DRIVE...";
         btn.disabled = true;
 
@@ -432,11 +440,11 @@
                 body: JSON.stringify({ nombreArchivo: nombreArchivoFinal, html: contenidoHTML })
             });
 
-            alert("¡Subido con éxito! El reporte ya está guardado en tu carpeta de Google Drive.");
+            alert("¡Subido con éxito! El reporte completo con formato Word se guardó en tu carpeta de Google Drive.");
         } catch (error) {
             alert("Error de conexión al subir a la nube: " + error.message);
         } finally {
-            btn.innerText = "☁️ GUARDAR EN LA NUBE";
+            btn.innerText = textoOriginal;
             btn.disabled = false;
         }
     }
