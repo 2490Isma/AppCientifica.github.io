@@ -407,7 +407,7 @@
     
     function exportarWord() {
         const d = construirEstructuraCampos();
-        const nombreArchivo = `Reporte_${d.lef || "S-LEF"}.html`;
+        const nombreArchivo = `Reporte_${d.lef || "S-LEF"}.doc`;
         const contenidoHTML = obtenerContenidoHTML(d);
         
         const blob = new Blob([contenidoHTML], { type: 'text/html;charset=utf-8' });
@@ -425,7 +425,8 @@
         }
 
         const d = construirEstructuraCampos();
-        const nombreArchivoFinal = `Reporte_${d.lef || "S-LEF"}.html`;
+        // Cambiado de .html a .doc para forzar el formato Word en la nube
+        const nombreArchivoFinal = `Reporte_${d.lef || "S-LEF"}.doc`;
         const contenidoHTML = obtenerContenidoHTML(d);
         
         const textoOriginal = btn.innerText;
@@ -440,7 +441,7 @@
                 body: JSON.stringify({ nombreArchivo: nombreArchivoFinal, html: contenidoHTML })
             });
 
-            alert("¡Subido con éxito! El reporte completo con formato Word se guardó en tu carpeta de Google Drive.");
+            alert("¡Subido con éxito! El reporte completo con formato Word (.doc) se guardó en tu carpeta de Google Drive.");
         } catch (error) {
             alert("Error de conexión al subir a la nube: " + error.message);
         } finally {
