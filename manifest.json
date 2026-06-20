@@ -1,0 +1,16 @@
+{
+  "name": "App Científica",
+  "short_name": "AppCientifica",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#000000",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "photo_2026-06-20_11-49-25.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg"
+    }
+  ]
+}
