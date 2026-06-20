@@ -6,7 +6,7 @@
     <title>Científica Brandsen - Gestión de Reportes</title>
     <style>
         body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background-color: #050a12; padding: 5px; color: #333; margin: 0; }
-        
+       
         /* ESTILOS DE LA PANTALLA DE CARGA (SPLASH) */
         #splash-screen {
             position: fixed;
@@ -22,7 +22,6 @@
             z-index: 9999;
             transition: opacity 0.8s ease;
         }
-
         .splash-img {
             max-width: 90%;
             max-height: 65vh;
@@ -31,12 +30,10 @@
             box-shadow: 0 4px 25px rgba(0,0,0,0.7);
             animation: fadeInScale 1.2s ease-out;
         }
-
         @keyframes fadeInScale {
             0% { opacity: 0; transform: scale(0.9); }
             100% { opacity: 1; transform: scale(1); }
         }
-
         .loading-bar-container {
             width: 200px;
             height: 4px;
@@ -45,22 +42,18 @@
             border-radius: 2px;
             overflow: hidden;
         }
-
         .loading-bar-progress {
             width: 0%;
             height: 100%;
             background: #25D366;
             animation: progress 2.5s linear forwards;
         }
-
         @keyframes progress {
             0% { width: 0%; }
             100% { width: 100%; }
         }
-
         /* ESTILOS GENERALES DE LA APP */
         #app-content { display: none; }
-
         .card { background: white; padding: 15px; border-radius: 8px; max-width: 500px; margin: 10px auto; box-shadow: 0 4px 15px rgba(0,0,0,0.6); }
         .color-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 5px; margin-bottom: 10px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
         .color-item { display: flex; align-items: center; gap: 5px; font-size: 0.7rem; background: #f4f6f8; padding: 6px; border-radius: 4px; border: 1px solid #ddd; font-weight: bold; cursor: pointer; }
@@ -68,7 +61,7 @@
         input, textarea, select { width: 100%; padding: 10px; margin-top: 3px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; font-size: 0.9rem; }
         input[type="date"] { font-family: inherit; cursor: pointer; }
         .row { display: flex; gap: 4px; }
-        
+       
         #bloque-labor, #btn-pdf-container { display: none; }
         .section-lab { background: #f0f4f8; padding: 10px; border-radius: 6px; margin-top: 15px; border-left: 4px solid #25D366; }
         .btn-wa { background-color: #25D366; color: white; padding: 16px; border: none; border-radius: 8px; font-weight: bold; width: 100%; margin-top: 20px; cursor: pointer; font-size: 1rem; text-transform: uppercase; }
@@ -77,12 +70,12 @@
         .btn-reset { background-color: #f8f9fa; color: #d9534f; border: 1px solid #ccc; padding: 8px; border-radius: 4px; width: 100%; margin-top: 10px; font-size: 0.7rem; font-weight: bold;}
         .btn-tool { background: #e9ecef; border: 1px solid #ced4da; padding: 8px; border-radius: 4px; font-size: 0.65rem; font-weight: bold; cursor: pointer; flex: 1; text-align: center; }
         .btn-import { background-color: #007bff; color: white; padding: 12px; border: none; border-radius: 8px; font-weight: bold; width: 100%; margin-bottom: 15px; cursor: pointer; font-size: 0.9rem; text-transform: uppercase; }
-        
+       
         #sintesis { height: 120px; resize: vertical; }
         .historial { margin-top: 20px; background: #f4f6f8; padding: 10px; border-radius: 6px; font-size: 0.75rem; border: 1px solid #ddd; }
         .hist-item { border-bottom: 1px solid #ddd; padding: 10px 0; display: flex; flex-direction: column; gap: 5px; }
         .btn-edit { background: #007bff; color: white; border: none; padding: 8px 12px; border-radius: 4px; font-size: 0.75rem; font-weight: bold; cursor: pointer; align-self: flex-end; }
-        
+       
         @media print {
             body { background: white; padding: 0; }
             #splash-screen, #app-content { display: none !important; }
@@ -96,20 +89,18 @@
     </style>
 </head>
 <body>
-
 <div id="splash-screen">
-    <img src="escudo.jpg" class="splash-img" alt="Escudo Policía Científica">
-    
+    <img src="photo_2026-06-20_11-49-25.jpg" class="splash-img" alt="Escudo Policía Científica">
+   
     <div class="loading-bar-container">
         <div class="loading-bar-progress"></div>
     </div>
     <div style="color: white; margin-top: 15px; font-size: 0.9rem; letter-spacing: 1px; font-weight: bold; opacity: 0.8;">ESPERE... SISTEMA DE REPORTES ESTÁ CARGANDO</div>
 </div>
-
 <div id="app-content">
     <div class="card">
         <button class="btn-import" onclick="importarDatos()">📥 IMPORTAR DATOS (POLICIAL)</button>
-        
+       
         <label>🛑 CLASIFICACIÓN (STICKERS)</label>
         <div class="color-grid" id="gridStickers">
             <label class="color-item"><input type="checkbox" value="🔴"> 🔴 Homicidio</label>
@@ -120,29 +111,23 @@
             <label class="color-item"><input type="checkbox" value="🟤"> 🟤 Suicidio</label>
             <label class="color-item"><input type="checkbox" value="⚫"> ⚫ ACM</label>
         </div>
-
         <label>📌 Carátula</label>
         <input type="text" id="caratula" placeholder="Escribir carátula aquí...">
-
         <div class="row">
             <div style="flex:1"><label>🔢 DOC</label><input type="text" id="dco" value="---"></div>
             <div style="flex:2"><label>🔢 LEF/A.R.A</label><input type="text" id="lef_completo" value="4436-00000-2026"></div>
         </div>
-
         <label>📅 FECHA DEL HECHO</label>
         <input type="date" id="fecha_hecho">
-
         <label>⏰ Horarios (Solicitud / Salida / Finalización)</label>
         <div class="row">
             <div style="flex:1"><input type="text" id="h_sol" placeholder="Solic. (Ej: 0800)"></div>
             <div style="flex:1"><input type="text" id="h_sal" placeholder="Salida (Ej: 0815)"></div>
             <div style="flex:1"><input type="text" id="h_fin" placeholder="Fin. (Ej: 1130)"></div>
         </div>
-
         <label>👤 Víctima e Imputado</label>
         <input type="text" id="victima" value="Apellido y Nombre, xx años, DNI N.° 00.000.000, domicilio....., estado civil ....etc." style="margin-bottom:4px">
         <input type="text" id="imputado" value="NEGATIVO, SE DESCONOCE, Apellido y Nombre, xx años, DNI N.° 00.000.000, domicilio....., estado civil ....etc.">
-
         <label>🏛️ Jurisdicción y Dependencia</label>
         <select id="jpc" onchange="actualizarDep()">
             <option value="---">--- Seleccionar Jefatura ---</option>
@@ -150,13 +135,11 @@
             <option value="Jefatura de Policía de Seguridad General Paz.">Jefatura de Policía de Seguridad General Paz.</option>
         </select>
         <select id="dep" style="margin-top:5px"><option value="---">--- Dependencia ---</option></select>
-
         <label>⚖️ UFI Interviniendo</label>
         <select id="ufi">
             <option value="Unidad Funcional de Instrucción Descentralizada Brandsen - Departamento Judicial LA PLATA">Unidad Funcional de Instrucción Descentralizada Brandsen - Departamento Judicial LA PLATA</option>
             <option value="Ayudantía de Fiscal General Paz - Departamento Judicial LA PLATA">Ayudantía de Fiscal General Paz - Departamento Judicial LA PLATA</option>
         </select>
-
         <label>📍 Lugar y GPS</label>
         <input type="text" id="lugar" placeholder="Lugar del hecho">
         <div class="row" style="margin-top:5px">
@@ -164,51 +147,42 @@
             <div class="btn-tool" onclick="window.open('https://www.google.com.ar/maps')">🗺️ MAPA</div>
             <div class="btn-tool" onclick="pegar()">📋 PEGAR</div>
         </div>
-
         <label>📝 Síntesis inicial</label>
         <textarea id="sintesis">Se ampliará. -</textarea>
-
         <div class="section-lab" id="bloque-labor">
             <label id="lbl-labor">📑 LABOR PERICIAL y EVIDENCIAS</label>
             <textarea id="lab_des" rows="10"></textarea>
         </div>
-
         <button class="btn-wa" id="btnMainWA" onclick="enviar()">🚀 ENVIAR WHATSAPP</button>
         <div id="btn-pdf-container">
             <button class="btn-pdf" onclick="generarPDF()">📄 IMPRIMIR / DESCARGAR PDF</button>
             <button class="btn-word" onclick="exportarWord()">💾 GUARDAR FORMATO WORD</button>
         </div>
         <button class="btn-reset" onclick="confirm('¿Limpiar?') && location.reload()">🗑️ LIMPIAR TODO</button>
-
         <div class="historial">
             <strong>📋 REPORTES RECIENTES (PARA EDITAR):</strong>
             <div id="listaHist"></div>
         </div>
     </div>
 </div>
-
 <div id="print-area"></div>
-
 <script>
     const deps = {
         "Jefatura de Policía de Seguridad Brandsen.": [
             "Estación de Policía Comunal Brandsen", "Destacamento Gomez", "Destacamento Jeppener", "Destacamento Altamirano", "Comando de Prevención Rural Brandsen", "Comisaria de la Mujer y la Familia Brandsen", "Destacamento Vial Brandsen", "Destacamento Vial Samborombon", "Subdelegación Departamental de Investigaciones Brandsen"
-        ], 
+        ],
         "Jefatura de Policía de Seguridad General Paz.": [
             "Estación de Policía Comunal General Paz", "Destacamento Loma Verde", "Destacamento Villanueva", "Comando de Prevención Rural General Paz", "Comisaria de la Mujer y la Familia General Paz", "Destacamento Vial Brandsen", "Destacamento Vial Samborombon", "Subdelegación Departamental de Investigaciones Brandsen"
         ]
     };
-
     let modoEdicionActivo = false;
     const TEXTO_ACCIDENTOLOGIA = "*FASE PRECEDENTE:* \n*FASE DE CONTACTO:* \n*POSICIÓN FINAL:* \n*INDICIOS ACCIDENTOLÓGICOS:* \n*TIPO DE COLISIÓN:* ";
     const FIRMA_WA = "*FDO: CRIO MAYOR SIOME ARIEL. DELEGADO DEPARTAMENTAL POLICIA CIENTIFICA LA PLATA.-*";
     const FIRMA_DOCUMENTO_HTML = "Federico A. Betanzos<br>Subcomisario<br>Jefe Sección Pericial BRANDSEN";
-
     // Manejo de la pantalla de carga
     window.addEventListener('load', () => {
         const hoy = new Date().toISOString().split('T')[0];
         document.getElementById('fecha_hecho').value = hoy;
-
         setTimeout(() => {
             const splash = document.getElementById('splash-screen');
             const content = document.getElementById('app-content');
@@ -220,16 +194,13 @@
             }, 800);
         }, 2500);
     });
-
     function obtenerLefCompleto() {
         return document.getElementById('lef_completo').value.trim() || "4436-00000-2026";
     }
-
     function aFormatoTitulo(texto) {
         if (!texto) return "---";
         return texto.trim().toLowerCase().replace(/(?:^|\s)\S/g, function(a) { return a.toUpperCase(); });
     }
-
     function formatearFechaSalida(fechaInput) {
         if (!fechaInput) return "---";
         const partes = fechaInput.split("-");
@@ -238,7 +209,6 @@
         }
         return fechaInput;
     }
-
     function convertirFechaParaInput(fechaTexto) {
         if (!fechaTexto) return "";
         const partes = fechaTexto.match(/(\d{1,2})[\/\- ](\d{1,2})[\/\- ](\d{4})/);
@@ -250,7 +220,6 @@
         }
         return "";
     }
-
     function importarDatos() {
         const raw = prompt("Pegue aquí el extracto policial:");
         if (!raw) return;
@@ -259,7 +228,7 @@
             for (let k of keywords) {
                 const regex = new RegExp(k + ":?\\s*(.*)", "i");
                 const match = raw.match(regex);
-                if (match && match[1] && match[1].trim().length > 1) return limpiar(match[1].split('\n')[0]); 
+                if (match && match[1] && match[1].trim().length > 1) return limpiar(match[1].split('\n')[0]);
             }
             return null;
         };
@@ -268,23 +237,20 @@
         const imp = buscarCampo(["CAUSANTE", "IMPUTADO", "APREHENDIDO", "SINDICADO", "CTA"]);
         const lug = buscarCampo(["LUGAR DEL HECHO", "LUGAR", "DOMICILIO"]);
         const fec = buscarCampo(["FECHA DEL HECHO", "FECHA", "FECHA HECHO"]);
-
         if (car) document.getElementById('caratula').value = car.toUpperCase();
         if (vic) document.getElementById('victima').value = vic;
         if (imp) document.getElementById('imputado').value = imp;
         if (lug) document.getElementById('lugar').value = lug;
-        
+       
         if (fec) {
             const fechaConvertida = convertirFechaParaInput(fec);
             if (fechaConvertida) document.getElementById('fecha_hecho').value = fechaConvertida;
         }
-
         const sinFull = raw.match(/(?:SINTESIS|EXTRACTO|RESEÑA):?\s*([\s\S]*)/i);
         if (sinFull) document.getElementById('sintesis').value = sinFull[1].trim();
     }
-
     function actualizarDep() {
-        const j = document.getElementById('jpc').value; 
+        const j = document.getElementById('jpc').value;
         const d = document.getElementById('dep');
         const u = document.getElementById('ufi');
         if(j === "---") { d.innerHTML = "<option value='---'>--- Dependencia ---</option>"; return; }
@@ -292,28 +258,25 @@
         d.innerHTML = "";
         deps[j].forEach(x => { let o = document.createElement("option"); o.value=x; o.text=x; d.add(o); });
     }
-
     async function pegar() { try { const text = await navigator.clipboard.readText(); document.getElementById('gps').value = text; } catch(e) { alert("Pegue manualmente."); } }
-
     function formatearHora(id) {
         let v = document.getElementById(id).value.trim();
         if (!v || v === "---") return (id === 'h_fin' ? "" : "---");
-        if (/^\d{3,4}$/.test(v)) { 
-            if (v.length === 3) v = "0" + v; 
-            v = v.substring(0, 2) + ":" + v.substring(2); 
+        if (/^\d{3,4}$/.test(v)) {
+            if (v.length === 3) v = "0" + v;
+            v = v.substring(0, 2) + ":" + v.substring(2);
         }
         return v;
     }
-
     function construirEstructuraCampos() {
         let rawCaratula = document.getElementById('caratula').value.trim();
         const car = rawCaratula ? `"${rawCaratula.toUpperCase()}"` : "---";
         const dco = document.getElementById('dco').value || "---";
         const lef = obtenerLefCompleto();
-        
+       
         const fechaVal = document.getElementById('fecha_hecho').value;
         const fecha = formatearFechaSalida(fechaVal);
-        
+       
         const h_sol = formatearHora('h_sol');
         const h_sal = formatearHora('h_sal');
         const h_fin = formatearHora('h_fin');
@@ -326,23 +289,20 @@
         const gps = document.getElementById('gps').value || "---";
         const sin = document.getElementById('sintesis').value;
         const sinBR = sin.replace(/\n/g, "<br>");
-        
+       
         const labLimpia = document.getElementById('lab_des').value.replace(/\*/g, "").replace(/\n/g, "<br>");
-        
-        // Unificado a "LABOR PERICIAL y EVIDENCIAS" para todos los formatos de documentos impresos o exportados
+       
         const tituloLabor_WA = "LABOR PERICIAL y EVIDENCIAS";
         const tituloLabor_Doc = "LABOR PERICIAL y EVIDENCIAS";
-
         return { car, dco, lef, fecha, fechaRaw: fechaVal, h_sol, h_sal, h_fin, vic, imp, seccional, ufi, lugar, gps, sin, sinBR, lab: labLimpia, tituloLabor_WA, tituloLabor_Doc };
     }
-
     function generarPDF() {
         const d = construirEstructuraCampos();
         const htmlFinal = `
             <div class="campo-pdf"><b>C.C.R. CENTRO</b></div>
             <div class="campo-pdf"><b>D.D.P.C. LA PLATA - S.P.D BRANDSEN</b></div>
             <div class="campo-pdf"><b>CARÁTULA:</b> ${d.car}</div>
-            <div class="campo-pdf"><b>FECHA:</b> ${d.fecha}</div> 
+            <div class="campo-pdf"><b>FECHA:</b> ${d.fecha}</div>
             <div class="campo-pdf"><b>DOC:</b> ${d.dco}</div>
             <div class="campo-pdf"><b>LEF/ARA:</b> ${d.lef}</div>
             <div class="campo-pdf"><b>HORA DE SOLICITUD:</b> ${d.h_sol}</div>
@@ -361,17 +321,16 @@
         document.getElementById('print-area').innerHTML = htmlFinal;
         window.print();
     }
-
     function exportarWord() {
         const d = construirEstructuraCampos();
         const nombreArchivo = `Reporte_${d.lef || "S-LEF"}.html`;
-        
+       
         const contenidoHTML = `<!DOCTYPE html>
         <html>
         <head>
             <meta charset="utf-8">
             <style>
-                body { font-family: 'Arial', sans-serif; font-size: 12pt; line-height: 1.5; color: black; margin: 1in; } 
+                body { font-family: 'Arial', sans-serif; font-size: 12pt; line-height: 1.5; color: black; margin: 1in; }
                 p { margin: 0 0 8pt 0; text-align: justify; line-height: 1.5; }
                 .firma-contenedor { margin-top: 60px; display: flex; flex-direction: column; align-items: flex-end; text-align: right; }
                 .firma-bloque { text-align: center; font-family: 'Arial', sans-serif; font-size: 9pt; line-height: 1.4; display: inline-block; min-width: 280px; border-top: 1px dashed #333; padding-top: 5px; }
@@ -381,7 +340,7 @@
             <p><b>C.C.R. CENTRO</b></p>
             <p><b>D.D.P.C. LA PLATA - S.P.D BRANDSEN</b></p>
             <p><b>CARÁTULA:</b> ${d.car}</p>
-            <p><b>FECHA:</b> ${d.fecha}</p> 
+            <p><b>FECHA:</b> ${d.fecha}</p>
             <p><b>DOC:</b> ${d.dco}</p>
             <p><b>LEF/ARA:</b> ${d.lef}</p>
             <p><b>HORA DE SOLICITUD:</b> ${d.h_sol}</p>
@@ -401,26 +360,24 @@
             </div>
         </body>
         </html>`;
-        
+       
         const blob = new Blob([contenidoHTML], { type: 'text/html;charset=utf-8' });
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a'); a.href = url; a.download = nombreArchivo; document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
     }
-
     function enviar() {
         const checks = Array.from(document.querySelectorAll('#gridStickers input:checked')).map(c => c.value);
         const stickersStr = checks.join("") || "👮";
         const d = construirEstructuraCampos();
         let msg = `${stickersStr}\n*C.C.R. CENTRO*\n*D.D.P.C. LA PLATA - S.P.D BRANDSEN*\n*CARATULA:* ${d.car || "SIN CARÁTULA"}\n*FECHA:* ${d.fecha}\n*DOC:* ${d.dco}\n*LEF/ARA:* ${d.lef}\n*HORA DE SOLICITUD:* ${d.h_sol}\n*HORA DE SALIDA:* ${d.h_sal}\n*HORA DE FINALIZACIÓN:* ${d.h_fin}\n*VÍCTIMA:* ${d.vic}\n*IMPUTADO:* ${d.imp}\n*SECCIONAL ACTUANTE:* ${d.seccional}\n*UFI INTERVINIENDO:* ${d.ufi}\n*LUGAR DEL HECHO:* ${d.lugar}\n*GPS:* ${d.gps || "---"}\n*SÍNTESIS DEL HECHO:* ${d.sin}`;
-        
-        if(document.getElementById('lab_des').value.trim()) { 
+       
+        if(document.getElementById('lab_des').value.trim()) {
             msg += `\n*${d.tituloLabor_WA}:*\n${document.getElementById('lab_des').value}`;
         }
         msg += `\n\n${FIRMA_WA}`;
         window.open("https://wa.me/?text=" + encodeURIComponent(msg));
         guardarEnHistorial({ caratula: document.getElementById('caratula').value, dco: d.dco, lef: d.lef, fechaRaw: d.fechaRaw, h_sol: d.h_sol, h_sal: d.h_sal, h_fin: d.h_fin, victima: document.getElementById('victima').value, imputado: document.getElementById('imputado').value, jpc: document.getElementById('jpc').value, dep: document.getElementById('dep').value, ufi: d.ufi, lugar: document.getElementById('lugar').value, gps: d.gps, sintesis: d.sin, lab_des: document.getElementById('lab_des').value, stickersArr: checks });
     }
-
     function guardarEnHistorial(data) {
         let storage = JSON.parse(localStorage.getItem('hist_BRANDSEN_FINAL') || "[]");
         if (!Array.isArray(storage)) storage = [];
@@ -428,7 +385,6 @@
         localStorage.setItem('hist_BRANDSEN_FINAL', JSON.stringify(storage.slice(0, 10)));
         dibujarHist();
     }
-
     function dibujarHist() {
         let s = JSON.parse(localStorage.getItem('hist_BRANDSEN_FINAL') || "[]");
         if (!Array.isArray(s)) s = [];
@@ -437,7 +393,6 @@
             container.innerHTML = s.map((item, i) => `<div class="hist-item"><span>📂 <b>${item.lef || "S/LEF"}</b> - ${item.caratula || "S/C"}</span><button class="btn-edit" onclick="editar(${i})">EDITAR / PERICIA</button></div>`).join("");
         }
     }
-
     function editar(idx) {
         modoEdicionActivo = true;
         const d = JSON.parse(localStorage.getItem('hist_BRANDSEN_FINAL'))[idx];
@@ -449,13 +404,12 @@
         document.getElementById('caratula').value = d.caratula || "";
         document.getElementById('dco').value = d.dco || "---";
         document.getElementById('lef_completo').value = d.lef || "4436-00000-2026";
-        
+       
         if (d.fechaRaw) {
             document.getElementById('fecha_hecho').value = d.fechaRaw;
         } else if (d.fecha) {
             document.getElementById('fecha_hecho').value = convertirFechaParaInput(d.fecha);
         }
-
         document.getElementById('h_sol').value = d.h_sol || "";
         document.getElementById('h_sal').value = d.h_sal || "";
         document.getElementById('h_fin').value = d.h_fin || "";
@@ -465,18 +419,18 @@
         document.getElementById('dep').value = d.dep || "---"; document.getElementById('ufi').value = d.ufi || "";
         document.getElementById('lugar').value = d.lugar || ""; document.getElementById('gps').value = d.gps || "";
         document.getElementById('sintesis').value = d.sintesis || "Se ampliará. -";
-        
+       
         document.querySelectorAll('#gridStickers input').forEach(cb => { cb.checked = (d.stickersArr && d.stickersArr.includes(cb.value)); });
-        
+       
         const esCulposas = document.getElementById('checkCulposas').checked;
         const campoLab = document.getElementById('lab_des');
-        
-        if (esCulposas && (!d.lab_des || d.lab_des.trim() === "")) { 
-            campoLab.value = TEXTO_ACCIDENTOLOGIA; 
-        } else { 
-            campoLab.value = d.lab_des || ""; 
+       
+        if (esCulposas && (!d.lab_des || d.lab_des.trim() === "")) {
+            campoLab.value = TEXTO_ACCIDENTOLOGIA;
+        } else {
+            campoLab.value = d.lab_des || "";
         }
-        
+       
         window.scrollTo({top: 0, behavior: 'smooth'});
     }
 </script>
