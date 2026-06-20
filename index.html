@@ -367,7 +367,7 @@
             <p><b>IMPUTADO:</b> ${d.imp}</p>
             <p><b>SECCIONAL ACTUANTE:</b> ${d.seccional}</p>
             <p><b>UFI INTERVINIENDO:</b> ${d.ufi}</p>
-            <p><b>LUGAR DEL HECHO:</b> ${d.lugar}</p>
+            <p>=LUGAR DEL HECHO:</b> ${d.lugar}</p>
             <p><b>GPS:</b> ${d.gps}</p>
             <p><b>SÍNTESIS DEL HECHO:</b> ${d.sinBR}</p>
             <br>
@@ -377,6 +377,34 @@
             </div>
         </body>
         </html>`;
+    }
+
+    /* ESTA FUNCIÓN GENERA EL FORMATO DE TEXTO LIMPIO COMPATIBLE CON WORD EN LA NUBE */
+    function obtenerContenidoTextoLimpio(d) {
+        const labTextoVal = document.getElementById('lab_des').value.replace(/\*/g, "");
+        return `C.C.R. CENTRO
+D.D.P.C. LA PLATA - S.P.D BRANDSEN
+CARÁTULA: ${d.car}
+FECHA: ${d.fecha}
+DOC: ${d.dco}
+LEF/ARA: ${d.lef}
+HORA DE SOLICITUD: ${d.h_sol}
+HORA DE SALIDA: ${d.h_sal}
+HORA DE FINALIZACIÓN: ${d.h_fin}
+VÍCTIMA: ${d.vic}
+IMPUTADO: ${d.imp}
+SECCIONAL ACTUANTE: ${d.seccional}
+UFI INTERVINIENDO: ${d.ufi}
+LUGAR DEL HECHO: ${d.lugar}
+GPS: ${d.gps}
+SÍNTESIS DEL HECHO: ${d.sin}
+ 
+${d.tituloLabor_Doc}:
+${labTextoVal}
+
+Federico A. Betanzos
+Subcomisario
+Jefe Sección Pericial BRANDSEN`;
     }
 
     function generarPDF() {
@@ -425,9 +453,9 @@
         }
 
         const d = construirEstructuraCampos();
-        // Cambiado de .html a .doc para forzar el formato Word en la nube
         const nombreArchivoFinal = `Reporte_${d.lef || "S-LEF"}.doc`;
-        const contenidoHTML = obtenerContenidoHTML(d);
+        // Aquí extraemos la estructura limpia en texto plano ordenada por saltos de línea
+        const contenidoTextoWord = obtenerContenidoTextoLimpio(d);
         
         const textoOriginal = btn.innerText;
         btn.innerText = "⏳ ENVIANDO A DRIVE...";
@@ -438,10 +466,10 @@
                 method: 'POST',
                 mode: 'no-cors', 
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ nombreArchivo: nombreArchivoFinal, html: contenidoHTML })
+                body: JSON.stringify({ nombreArchivo: nombreArchivoFinal, html: contenidoTextoWord })
             });
 
-            alert("¡Subido con éxito! El reporte completo con formato Word (.doc) se guardó en tu carpeta de Google Drive.");
+            alert("¡Subido con éxito! El reporte estructurado se guardó correctamente en tu carpeta de Google Drive.");
         } catch (error) {
             alert("Error de conexión al subir a la nube: " + error.message);
         } finally {
