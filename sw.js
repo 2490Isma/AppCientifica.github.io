@@ -1,4 +1,4 @@
-const CACHE_NAME = 'app-cientifica-v1';
+const CACHE_NAME = 'app-cientifica-v2';
 const ASSETS = [
   './',
   './index.html',
