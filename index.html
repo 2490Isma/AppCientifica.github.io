@@ -7,7 +7,7 @@
     <title>Científica Brandsen - Gestión de Reportes</title>
     <style>
         body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background-color: #050a12; padding: 5px; color: #333; margin: 0; }
-       
+        
         /* ESTILOS DE LA PANTALLA DE CARGA (SPLASH) */
         #splash-screen {
             position: fixed;
@@ -62,21 +62,21 @@
         input, textarea, select { width: 100%; padding: 10px; margin-top: 3px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; font-size: 0.9rem; }
         input[type="date"] { font-family: inherit; cursor: pointer; }
         .row { display: flex; gap: 4px; }
-       
+        
         #bloque-labor, #btn-pdf-container { display: none; }
         .section-lab { background: #f0f4f8; padding: 10px; border-radius: 6px; margin-top: 15px; border-left: 4px solid #25D366; }
         .btn-wa { background-color: #25D366; color: white; padding: 16px; border: none; border-radius: 8px; font-weight: bold; width: 100%; margin-top: 20px; cursor: pointer; font-size: 1rem; text-transform: uppercase; }
         .btn-pdf { background-color: #d9534f; color: white; padding: 12px; border: none; border-radius: 8px; font-weight: bold; width: 100%; margin-top: 10px; cursor: pointer; font-size: 0.9rem; text-transform: uppercase; }
         .btn-word { background-color: #007bff; color: white; padding: 12px; border: none; border-radius: 8px; font-weight: bold; width: 100%; margin-top: 5px; cursor: pointer; font-size: 0.9rem; text-transform: uppercase; }
         .btn-reset { background-color: #f8f9fa; color: #d9534f; border: 1px solid #ccc; padding: 8px; border-radius: 4px; width: 100%; margin-top: 10px; font-size: 0.7rem; font-weight: bold;}
-        .btn-tool { background: #e9ecef; border: 1px solid #ced4da; padding: 8px; border-radius: 4px; font-size: 0.65rem; font-weight: bold; cursor: pointer; flex: 1; text-align: center; }
+        .btn-tool { display: flex; align-items: center; justify-content: center; background: #e9ecef; border: 1px solid #ced4da; padding: 8px; border-radius: 4px; font-size: 0.65rem; font-weight: bold; cursor: pointer; flex: 1; text-align: center; }
         .btn-import { background-color: #007bff; color: white; padding: 12px; border: none; border-radius: 8px; font-weight: bold; width: 100%; margin-bottom: 15px; cursor: pointer; font-size: 0.9rem; text-transform: uppercase; }
-       
+        
         #sintesis { height: 120px; resize: vertical; }
         .historial { margin-top: 20px; background: #f4f6f8; padding: 10px; border-radius: 6px; font-size: 0.75rem; border: 1px solid #ddd; }
         .hist-item { border-bottom: 1px solid #ddd; padding: 10px 0; display: flex; flex-direction: column; gap: 5px; }
         .btn-edit { background: #007bff; color: white; border: none; padding: 8px 12px; border-radius: 4px; font-size: 0.75rem; font-weight: bold; cursor: pointer; align-self: flex-end; }
-       
+        
         @media print {
             body { background: white; padding: 0; }
             #splash-screen, #app-content { display: none !important; }
@@ -89,7 +89,7 @@
         #print-area { display: none; }
     </style>
 </head>
-    <script>
+<script>
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
       navigator.serviceWorker.register('./sw.js')
@@ -157,6 +157,7 @@
             <input type="text" id="gps" placeholder="Coordenadas" style="flex:2">
             <div class="btn-tool" onclick="window.open('https://www.google.com.ar/maps')">🗺️ MAPA</div>
             <div class="btn-tool" onclick="pegar()">📋 PEGAR</div>
+            <div class="btn-tool" onclick="capturarUbicacionGPS()">🛰️ GPS</div>
         </div>
         <label>📝 Síntesis inicial</label>
         <textarea id="sintesis">Se ampliará. -</textarea>
@@ -252,7 +253,7 @@
         if (vic) document.getElementById('victima').value = vic;
         if (imp) document.getElementById('imputado').value = imp;
         if (lug) document.getElementById('lugar').value = lug;
-       
+        
         if (fec) {
             const fechaConvertida = convertirFechaParaInput(fec);
             if (fechaConvertida) document.getElementById('fecha_hecho').value = fechaConvertida;
@@ -270,6 +271,28 @@
         deps[j].forEach(x => { let o = document.createElement("option"); o.value=x; o.text=x; d.add(o); });
     }
     async function pegar() { try { const text = await navigator.clipboard.readText(); document.getElementById('gps').value = text; } catch(e) { alert("Pegue manualmente."); } }
+    
+    function capturarUbicacionGPS() {
+        const campoGps = document.getElementById('gps');
+        if ("geolocation" in navigator) {
+            campoGps.value = "Calculando posición...";
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    const lat = position.coords.latitude.toFixed(6);
+                    const lon = position.coords.longitude.toFixed(6);
+                    campoGps.value = `${lat}, ${lon}`;
+                },
+                (error) => {
+                    alert("Error al obtener GPS: " + error.message);
+                    campoGps.value = "";
+                },
+                { enableHighAccuracy: true, timeout: 8000, maximumAge: 0 }
+            );
+        } else {
+            alert("Tu dispositivo o navegador no soporta geolocalización.");
+        }
+    }
+
     function formatearHora(id) {
         let v = document.getElementById(id).value.trim();
         if (!v || v === "---") return (id === 'h_fin' ? "" : "---");
@@ -284,10 +307,10 @@
         const car = rawCaratula ? `"${rawCaratula.toUpperCase()}"` : "---";
         const dco = document.getElementById('dco').value || "---";
         const lef = obtenerLefCompleto();
-       
+        
         const fechaVal = document.getElementById('fecha_hecho').value;
         const fecha = formatearFechaSalida(fechaVal);
-       
+        
         const h_sol = formatearHora('h_sol');
         const h_sal = formatearHora('h_sal');
         const h_fin = formatearHora('h_fin');
@@ -300,9 +323,9 @@
         const gps = document.getElementById('gps').value || "---";
         const sin = document.getElementById('sintesis').value;
         const sinBR = sin.replace(/\n/g, "<br>");
-       
+        
         const labLimpia = document.getElementById('lab_des').value.replace(/\*/g, "").replace(/\n/g, "<br>");
-       
+        
         const tituloLabor_WA = "LABOR PERICIAL y EVIDENCIAS";
         const tituloLabor_Doc = "LABOR PERICIAL y EVIDENCIAS";
         return { car, dco, lef, fecha, fechaRaw: fechaVal, h_sol, h_sal, h_fin, vic, imp, seccional, ufi, lugar, gps, sin, sinBR, lab: labLimpia, tituloLabor_WA, tituloLabor_Doc };
@@ -335,7 +358,7 @@
     function exportarWord() {
         const d = construirEstructuraCampos();
         const nombreArchivo = `Reporte_${d.lef || "S-LEF"}.html`;
-       
+        
         const contenidoHTML = `<!DOCTYPE html>
         <html>
         <head>
@@ -371,7 +394,7 @@
             </div>
         </body>
         </html>`;
-       
+        
         const blob = new Blob([contenidoHTML], { type: 'text/html;charset=utf-8' });
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a'); a.href = url; a.download = nombreArchivo; document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
@@ -381,7 +404,7 @@
         const stickersStr = checks.join("") || "👮";
         const d = construirEstructuraCampos();
         let msg = `${stickersStr}\n*C.C.R. CENTRO*\n*D.D.P.C. LA PLATA - S.P.D BRANDSEN*\n*CARATULA:* ${d.car || "SIN CARÁTULA"}\n*FECHA:* ${d.fecha}\n*DOC:* ${d.dco}\n*LEF/ARA:* ${d.lef}\n*HORA DE SOLICITUD:* ${d.h_sol}\n*HORA DE SALIDA:* ${d.h_sal}\n*HORA DE FINALIZACIÓN:* ${d.h_fin}\n*VÍCTIMA:* ${d.vic}\n*IMPUTADO:* ${d.imp}\n*SECCIONAL ACTUANTE:* ${d.seccional}\n*UFI INTERVINIENDO:* ${d.ufi}\n*LUGAR DEL HECHO:* ${d.lugar}\n*GPS:* ${d.gps || "---"}\n*SÍNTESIS DEL HECHO:* ${d.sin}`;
-       
+        
         if(document.getElementById('lab_des').value.trim()) {
             msg += `\n*${d.tituloLabor_WA}:*\n${document.getElementById('lab_des').value}`;
         }
@@ -395,6 +418,9 @@
         storage.unshift(data);
         localStorage.setItem('hist_BRANDSEN_FINAL', JSON.stringify(storage.slice(0, 10)));
         dibujarHist();
+    }
+    function borderAlineado() {
+        // Corrección visual estética menor para centrar iconos de botones herramientas
     }
     function dibujarHist() {
         let s = JSON.parse(localStorage.getItem('hist_BRANDSEN_FINAL') || "[]");
@@ -415,7 +441,7 @@
         document.getElementById('caratula').value = d.caratula || "";
         document.getElementById('dco').value = d.dco || "---";
         document.getElementById('lef_completo').value = d.lef || "4436-00000-2026";
-       
+        
         if (d.fechaRaw) {
             document.getElementById('fecha_hecho').value = d.fechaRaw;
         } else if (d.fecha) {
@@ -430,18 +456,18 @@
         document.getElementById('dep').value = d.dep || "---"; document.getElementById('ufi').value = d.ufi || "";
         document.getElementById('lugar').value = d.lugar || ""; document.getElementById('gps').value = d.gps || "";
         document.getElementById('sintesis').value = d.sintesis || "Se ampliará. -";
-       
+        
         document.querySelectorAll('#gridStickers input').forEach(cb => { cb.checked = (d.stickersArr && d.stickersArr.includes(cb.value)); });
-       
+        
         const esCulposas = document.getElementById('checkCulposas').checked;
         const campoLab = document.getElementById('lab_des');
-       
+        
         if (esCulposas && (!d.lab_des || d.lab_des.trim() === "")) {
             campoLab.value = TEXTO_ACCIDENTOLOGIA;
         } else {
             campoLab.value = d.lab_des || "";
         }
-       
+        
         window.scrollTo({top: 0, behavior: 'smooth'});
     }
 </script>
