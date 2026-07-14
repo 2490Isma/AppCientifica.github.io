@@ -217,7 +217,7 @@
     try{
       const r=await fetch(URL_MI_NUBE+"?lef="+encodeURIComponent(lef));
       const datos=await r.json();
-      if(datos.ok){window.open(datos.url,"_blank");}
+      if(datos.ok){cargarDatosFormulario(datos.datos);}
       else{alert(datos.mensaje);}
     }catch(e){console.error(e);alert("Error al consultar Drive.");}
     finally{btn.disabled=false;btn.innerText=t;}
@@ -362,7 +362,11 @@ window.addEventListener('load', () => {
         return { car, dco, lef, fecha, fechaRaw: fechaVal, h_sol, h_sal, h_fin, vic, imp, seccional, ufi, lugar, gps, sin, sinBR, lab: labLimpia, tituloLabor_WA, tituloLabor_Doc };
     }
   
-    function obtenerContenidoHTML(d) {
+    
+function obtenerDatosFormulario(){return {caratula:document.getElementById("caratula").value,dco:document.getElementById("dco").value,lef:document.getElementById("lef_completo").value,fecha:document.getElementById("fecha_hecho").value,h_sol:document.getElementById("h_sol").value,h_sal:document.getElementById("h_sal").value,h_fin:document.getElementById("h_fin").value,victima:document.getElementById("victima").value,imputado:document.getElementById("imputado").value,jpc:document.getElementById("jpc").value,dep:document.getElementById("dep").value,ufi:document.getElementById("ufi").value,lugar:document.getElementById("lugar").value,gps:document.getElementById("gps").value,sintesis:document.getElementById("sintesis").value,lab_des:document.getElementById("lab_des").value,stickers:Array.from(document.querySelectorAll("#gridStickers input:checked")).map(c=>c.value)};}
+function cargarDatosFormulario(d){["caratula","dco","fecha","victima","imputado","jpc","dep","ufi","lugar","gps","sintesis","lab_des"].forEach(k=>{let id=k=="fecha"?"fecha_hecho":k;document.getElementById(id).value=d[k]||""});document.getElementById("lef_completo").value=d.lef||"";document.getElementById("h_sol").value=d.h_sol||"";document.getElementById("h_sal").value=d.h_sal||"";document.getElementById("h_fin").value=d.h_fin||"";actualizarDep();document.querySelectorAll("#gridStickers input").forEach(c=>c.checked=(d.stickers||[]).includes(c.value));}
+
+function obtenerContenidoHTML(d) {
         return `<!DOCTYPE html>
         <html>
         <head>
@@ -396,7 +400,8 @@ window.addEventListener('load', () => {
             <div class="firma-contenedor">
                 <div class="firma-bloque">${FIRMA_DOCUMENTO_HTML}</div>
             </div>
-        </body>
+        ${`<!-- DATOS_APP_INICIO\n${JSON.stringify(obtenerDatosFormulario())}\nDATOS_APP_FIN -->`}
+</body>
         </html>`;
     }
 
@@ -467,7 +472,7 @@ Jefe Sección Pericial BRANDSEN`;
       
         const d = construirEstructuraCampos();
         const nombreArchivoFinal = `Reporte_${d.lef || "S-LEF"}.doc`;
-        const contenidoTextoWord = obtenerContenidoTextoLimpio(d);
+        const contenidoHTML = obtenerContenidoHTML(d);
       
         const textoOriginal = btn.innerText;
         btn.innerText = "⏳ ENVIANDO A DRIVE...";
@@ -477,7 +482,7 @@ Jefe Sección Pericial BRANDSEN`;
                 method: 'POST',
                 mode: 'no-cors',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ nombreArchivo: nombreArchivoFinal, html: contenidoTextoWord })
+                body: JSON.stringify({ nombreArchivo: nombreArchivoFinal, html: contenidoHTML })
             });
             alert("¡Subido con éxito! El reporte estructurado se guardó correctamente en tu carpeta de Google Drive.");
         } catch (error) {
