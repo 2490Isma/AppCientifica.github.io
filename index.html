@@ -7,7 +7,7 @@
     <title>Científica Brandsen - Gestión de Reportes</title>
     <style>
         body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background-color: #050a12; padding: 5px; color: #333; margin: 0; }
-        
+       
         /* ESTILOS DE LA PANTALLA DE CARGA (SPLASH) */
         #splash-screen {
             position: fixed;
@@ -62,7 +62,7 @@
         input, textarea, select { width: 100%; padding: 10px; margin-top: 3px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; font-size: 0.9rem; }
         input[type="date"] { font-family: inherit; cursor: pointer; }
         .row { display: flex; gap: 4px; }
-        
+       
         #bloque-labor, #btn-pdf-container { display: none; }
         .section-lab { background: #f0f4f8; padding: 10px; border-radius: 6px; margin-top: 15px; border-left: 4px solid #25D366; }
         .btn-wa { background-color: #25D366; color: white; padding: 16px; border: none; border-radius: 8px; font-weight: bold; width: 100%; margin-top: 20px; cursor: pointer; font-size: 1rem; text-transform: uppercase; }
@@ -72,12 +72,12 @@
         .btn-reset { background-color: #f8f9fa; color: #d9534f; border: 1px solid #ccc; padding: 8px; border-radius: 4px; width: 100%; margin-top: 10px; font-size: 0.7rem; font-weight: bold;}
         .btn-tool { display: flex; align-items: center; justify-content: center; background: #e9ecef; border: 1px solid #ced4da; padding: 8px; border-radius: 4px; font-size: 0.65rem; font-weight: bold; cursor: pointer; flex: 1; text-align: center; }
         .btn-import { background-color: #007bff; color: white; padding: 12px; border: none; border-radius: 8px; font-weight: bold; width: 100%; margin-bottom: 15px; cursor: pointer; font-size: 0.9rem; text-transform: uppercase; }
-        
+       
         #sintesis { height: 120px; resize: vertical; }
         .historial { margin-top: 20px; background: #f4f6f8; padding: 10px; border-radius: 6px; font-size: 0.75rem; border: 1px solid #ddd; }
         .hist-item { border-bottom: 1px solid #ddd; padding: 10px 0; display: flex; flex-direction: column; gap: 5px; }
         .btn-edit { background: #007bff; color: white; border: none; padding: 8px 12px; border-radius: 4px; font-size: 0.75rem; font-weight: bold; cursor: pointer; align-self: flex-end; }
-        
+       
         @media print {
             body { background: white; padding: 0; }
             #splash-screen, #app-content { display: none !important; }
@@ -99,11 +99,11 @@
     });
   }
 </script>
-    
+   
 <body>
 <div id="splash-screen">
     <img src="photo_2026-06-20_11-49-25.jpg" class="splash-img" alt="Escudo Policía Científica">
-   
+  
     <div class="loading-bar-container">
         <div class="loading-bar-progress"></div>
     </div>
@@ -112,7 +112,7 @@
 <div id="app-content">
     <div class="card">
         <button class="btn-import" onclick="importarDatos()">📥 IMPORTAR DATOS (POLICIAL)</button>
-       
+      
         <label>🛑 CLASIFICACIÓN (STICKERS)</label>
         <div class="color-grid" id="gridStickers">
             <label class="color-item"><input type="checkbox" value="🔴"> 🔴 Homicidio</label>
@@ -129,6 +129,12 @@
             <div style="flex:1"><label>🔢 DOC</label><input type="text" id="dco" value="---"></div>
             <div style="flex:2"><label>🔢 LEF/A.R.A</label><input type="text" id="lef_completo" value="4436-00000-2026"></div>
         </div>
+
+        <!-- BOTÓN DE AMPLIACIÓN AGREGADO AQUÍ -->
+        <div style="margin-top:5px;">
+            <button class="btn-word" onclick="consultarAmpliacion()">📄 AMPLIACIÓN LEF/A.R.A.</button>
+        </div>
+
         <label>📅 FECHA DEL HECHO</label>
         <input type="date" id="fecha_hecho">
         <label>⏰ Horarios (Solicitud / Salida / Finalización)</label>
@@ -166,18 +172,18 @@
             <label id="lbl-labor">📑 LABOR PERICIAL y EVIDENCIAS</label>
             <textarea id="lab_des" rows="10"></textarea>
         </div>
-        
+       
         <!-- BOTONES PRINCIPALES FIJOS -->
         <button class="btn-wa" id="btnMainWA" onclick="enviar()">🚀 ENVIAR WHATSAPP</button>
         <button class="btn-nube" id="btnNubeDirecto" onclick="guardarEnNube('btnNubeDirecto')">☁️ SUBIR NUBE</button>
-        
+       
         <!-- BOTONES SECUNDARIOS QUE SE ACTIVAN AL EDITAR -->
         <div id="btn-pdf-container">
             <button class="btn-pdf" onclick="generarPDF()">📄 IMPRIMIR / DESCARGAR PDF</button>
             <button class="btn-word" onclick="exportarWord()">💾 GUARDAR FORMATO WORD</button>
             <button class="btn-nube" id="btnNube" onclick="guardarEnNube('btnNube')">☁️ SUBIR NUBE</button>
         </div>
-        
+       
         <button class="btn-reset" onclick="confirm('¿Limpiar?') && location.reload()">🗑️ LIMPIAR TODO</button>
         <div class="historial">
             <strong>📋 REPORTES RECIENTES (PARA EDITAR):</strong>
@@ -186,9 +192,9 @@
     </div>
 </div>
 <div id="print-area"></div>
-<script>
-    const URL_MI_NUBE = "https://script.google.com/macros/s/AKfycbxa9Fnm7sejvWjQZMrbgfFbTwZ2iOKtvqAhOXST86yswblbv12NUU89qsEv6pHCnnM/exec"; 
 
+<script>
+    const URL_MI_NUBE = "https://script.google.com/macros/s/AKfycbxa9Fnm7sejvWjQZMrbgfFbTwZ2iOKtvqAhOXST86yswblbv12NUU89qsEv6pHCnnM/exec";
     const deps = {
         "Jefatura de Policía de Seguridad Brandsen.": [
             "Estación de Policía Comunal Brandsen", "Destacamento Gomez", "Destacamento Jeppener", "Destacamento Altamirano", "Comando de Prevención Rural Brandsen", "Comisaria de la Mujer y la Familia Brandsen", "Destacamento Vial Brandsen", "Destacamento Vial Samborombon", "Subdelegación Departamental de Investigaciones Brandsen"
@@ -201,7 +207,27 @@
     const TEXTO_ACCIDENTOLOGIA = "*FASE PRECEDENTE:* \n*FASE DE CONTACTO:* \n*POSICIÓN FINAL:* \n*INDICIOS ACCIDENTOLÓGICOS:* \n*TIPO DE COLISIÓN:* ";
     const FIRMA_WA = "*FDO: CRIO MAYOR SIOME ARIEL. DELEGADO DEPARTAMENTAL POLICIA CIENTIFICA LA PLATA.-*";
     const FIRMA_DOCUMENTO_HTML = "Federico A. Betanzos<br>Subcomisario<br>Jefe Sección Pericial BRANDSEN";
-    
+
+    // === FUNCIÓN AGREGADA ===
+    async function consultarAmpliacion(){
+        const lef = document.getElementById("lef_completo").value.trim();
+        if(lef==""){
+            alert("Ingrese un LEF/A.R.A.");
+            return;
+        }
+        try{
+            const r = await fetch( URL_MI_NUBE + "?lef=" + encodeURIComponent(lef) );
+            const datos = await r.json();
+            if(datos.ok){
+                window.open(datos.url,"_blank");
+            }else{
+                alert(datos.mensaje || "No existe una ampliación.");
+            }
+        }catch(e){
+            alert("Error al consultar Drive.");
+        }
+    }
+
     window.addEventListener('load', () => {
         const hoy = new Date().toISOString().split('T')[0];
         document.getElementById('fecha_hecho').value = hoy;
@@ -263,7 +289,7 @@
         if (vic) document.getElementById('victima').value = vic;
         if (imp) document.getElementById('imputado').value = imp;
         if (lug) document.getElementById('lugar').value = lug;
-        
+       
         if (fec) {
             const fechaConvertida = convertirFechaParaInput(fec);
             if (fechaConvertida) document.getElementById('fecha_hecho').value = fechaConvertida;
@@ -281,7 +307,7 @@
         deps[j].forEach(x => { let o = document.createElement("option"); o.value=x; o.text=x; d.add(o); });
     }
     async function pegar() { try { const text = await navigator.clipboard.readText(); document.getElementById('gps').value = text; } catch(e) { alert("Pegue manualmente."); } }
-    
+   
     function capturarUbicacionGPS() {
         const campoGps = document.getElementById('gps');
         if ("geolocation" in navigator) {
@@ -302,7 +328,6 @@
             alert("Tu dispositivo o navegador no soporta geolocalización.");
         }
     }
-
     function formatearHora(id) {
         let v = document.getElementById(id).value.trim();
         if (!v || v === "---") return (id === 'h_fin' ? "" : "---");
@@ -317,10 +342,10 @@
         const car = rawCaratula ? `"${rawCaratula.toUpperCase()}"` : "---";
         const dco = document.getElementById('dco').value || "---";
         const lef = obtenerLefCompleto();
-        
+       
         const fechaVal = document.getElementById('fecha_hecho').value;
         const fecha = formatearFechaSalida(fechaVal);
-        
+       
         const h_sol = formatearHora('h_sol');
         const h_sal = formatearHora('h_sal');
         const h_fin = formatearHora('h_fin');
@@ -333,14 +358,14 @@
         const gps = document.getElementById('gps').value || "---";
         const sin = document.getElementById('sintesis').value;
         const sinBR = sin.replace(/\n/g, "<br>");
-        
+       
         const labLimpia = document.getElementById('lab_des').value.replace(/\*/g, "").replace(/\n/g, "<br>");
-        
+       
         const tituloLabor_WA = "LABOR PERICIAL y EVIDENCIAS";
         const tituloLabor_Doc = "LABOR PERICIAL y EVIDENCIAS";
         return { car, dco, lef, fecha, fechaRaw: fechaVal, h_sol, h_sal, h_fin, vic, imp, seccional, ufi, lugar, gps, sin, sinBR, lab: labLimpia, tituloLabor_WA, tituloLabor_Doc };
     }
-    
+   
     function obtenerContenidoHTML(d) {
         return `<!DOCTYPE html>
         <html>
@@ -378,7 +403,6 @@
         </body>
         </html>`;
     }
-
     /* ESTA FUNCIÓN GENERA EL FORMATO DE TEXTO LIMPIO COMPATIBLE CON WORD EN LA NUBE */
     function obtenerContenidoTextoLimpio(d) {
         const labTextoVal = document.getElementById('lab_des').value.replace(/\*/g, "");
@@ -398,15 +422,12 @@ UFI INTERVINIENDO: ${d.ufi}
 LUGAR DEL HECHO: ${d.lugar}
 GPS: ${d.gps}
 SÍNTESIS DEL HECHO: ${d.sin}
- 
 ${d.tituloLabor_Doc}:
 ${labTextoVal}
-
 Federico A. Betanzos
 Subcomisario
 Jefe Sección Pericial BRANDSEN`;
     }
-
     function generarPDF() {
         const d = construirEstructuraCampos();
         const htmlFinal = `
@@ -432,43 +453,38 @@ Jefe Sección Pericial BRANDSEN`;
         document.getElementById('print-area').innerHTML = htmlFinal;
         window.print();
     }
-    
+   
     function exportarWord() {
         const d = construirEstructuraCampos();
         const nombreArchivo = `Reporte_${d.lef || "S-LEF"}.doc`;
         const contenidoHTML = obtenerContenidoHTML(d);
-        
+       
         const blob = new Blob([contenidoHTML], { type: 'text/html;charset=utf-8' });
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a'); a.href = url; a.download = nombreArchivo; document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
     }
-
     async function guardarEnNube(idBotonPresionado) {
         const botonId = idBotonPresionado || 'btnNube';
         const btn = document.getElementById(botonId);
-        
+       
         if (URL_MI_NUBE === "" || URL_MI_NUBE.includes("TU_URL_DE_GOOGLE")) {
             alert("Error: Configura la URL válida de tu script de Google.");
             return;
         }
-
         const d = construirEstructuraCampos();
         const nombreArchivoFinal = `Reporte_${d.lef || "S-LEF"}.doc`;
-        // Aquí extraemos la estructura limpia en texto plano ordenada por saltos de línea
         const contenidoTextoWord = obtenerContenidoTextoLimpio(d);
-        
+       
         const textoOriginal = btn.innerText;
         btn.innerText = "⏳ ENVIANDO A DRIVE...";
         btn.disabled = true;
-
         try {
             await fetch(URL_MI_NUBE, {
                 method: 'POST',
-                mode: 'no-cors', 
+                mode: 'no-cors',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ nombreArchivo: nombreArchivoFinal, html: contenidoTextoWord })
             });
-
             alert("¡Subido con éxito! El reporte estructurado se guardó correctamente en tu carpeta de Google Drive.");
         } catch (error) {
             alert("Error de conexión al subir a la nube: " + error.message);
@@ -477,13 +493,12 @@ Jefe Sección Pericial BRANDSEN`;
             btn.disabled = false;
         }
     }
-
     function enviar() {
         const checks = Array.from(document.querySelectorAll('#gridStickers input:checked')).map(c => c.value);
         const stickersStr = checks.join("") || "👮";
         const d = construirEstructuraCampos();
         let msg = `${stickersStr}\n*C.C.R. CENTRO*\n*D.D.P.C. LA PLATA - S.P.D BRANDSEN*\n*CARATULA:* ${d.car || "SIN CARÁTULA"}\n*FECHA:* ${d.fecha}\n*DOC:* ${d.dco}\n*LEF/ARA:* ${d.lef}\n*HORA DE SOLICITUD:* ${d.h_sol}\n*HORA DE SALIDA:* ${d.h_sal}\n*HORA DE FINALIZACIÓN:* ${d.h_fin}\n*VÍCTIMA:* ${d.vic}\n*IMPUTADO:* ${d.imp}\n*SECCIONAL ACTUANTE:* ${d.seccional}\n*UFI INTERVINIENDO:* ${d.ufi}\n*LUGAR DEL HECHO:* ${d.lugar}\n*GPS:* ${d.gps || "---"}\n*SÍNTESIS DEL HECHO:* ${d.sin}`;
-        
+       
         if(document.getElementById('lab_des').value.trim()) {
             msg += `\n*${d.tituloLabor_WA}:*\n${document.getElementById('lab_des').value}`;
         }
@@ -517,7 +532,7 @@ Jefe Sección Pericial BRANDSEN`;
         document.getElementById('caratula').value = d.caratula || "";
         document.getElementById('dco').value = d.dco || "---";
         document.getElementById('lef_completo').value = d.lef || "4436-00000-2026";
-        
+       
         if (d.fechaRaw) {
             document.getElementById('fecha_hecho').value = d.fechaRaw;
         } else if (d.fecha) {
@@ -532,18 +547,18 @@ Jefe Sección Pericial BRANDSEN`;
         document.getElementById('dep').value = d.dep || "---"; document.getElementById('ufi').value = d.ufi || "";
         document.getElementById('lugar').value = d.lugar || ""; document.getElementById('gps').value = d.gps || "";
         document.getElementById('sintesis').value = d.sintesis || "Se ampliará. -";
-        
+       
         document.querySelectorAll('#gridStickers input').forEach(cb => { cb.checked = (d.stickersArr && d.stickersArr.includes(cb.value)); });
-        
+       
         const esCulposas = document.getElementById('checkCulposas').checked;
         const campoLab = document.getElementById('lab_des');
-        
+       
         if (esCulposas && (!d.lab_des || d.lab_des.trim() === "")) {
             campoLab.value = TEXTO_ACCIDENTOLOGIA;
         } else {
             campoLab.value = d.lab_des || "";
         }
-        
+       
         window.scrollTo({top: 0, behavior: 'smooth'});
     }
 </script>
