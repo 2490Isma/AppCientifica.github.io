@@ -210,40 +210,19 @@
 
     // === FUNCIÓN MEJORADA ===
     async function consultarAmpliacion() {
-        const lef = document.getElementById("lef_completo").value.trim();
-        if (lef === "") {
-            alert("Ingrese un LEF/A.R.A.");
-            return;
-        }
-
-        const btn = document.querySelector('button[onclick="consultarAmpliacion()"]');
-        const textoOriginal = btn.innerText;
-        btn.innerText = "⏳ Consultando...";
-        btn.disabled = true;
-
-        try {
-            const url = URL_MI_NUBE + "?lef=" + encodeURIComponent(lef) + "&action=consultarAmpliacion";
-            
-            const r = await fetch(url, {
-                method: 'GET',
-                mode: 'no-cors',
-                cache: 'no-cache'
-            });
-
-            // Abrimos directamente la URL (funciona mejor con no-cors)
-            const urlDirecta = `https://script.google.com/macros/s/AKfycbxa9Fnm7sejvWjQZMrbgfFbTwZ2iOKtvqAhOXST86yswblbv12NUU89qsEv6pHCnnM/exec?lef=${encodeURIComponent(lef)}`;
-            window.open(urlDirecta, "_blank");
-            
-        } catch (e) {
-            console.error(e);
-            alert("Error al consultar Drive.\n\nPosibles causas:\n• Sin conexión a internet\n• Restricción CORS del script de Google");
-        } finally {
-            btn.innerText = textoOriginal;
-            btn.disabled = false;
-        }
-    }
-
-    window.addEventListener('load', () => {
+    const lef=document.getElementById("lef_completo").value.trim();
+    if(!lef){alert("Ingrese un LEF/A.R.A.");return;}
+    const btn=document.querySelector('button[onclick="consultarAmpliacion()"]');
+    const t=btn.innerText;btn.disabled=true;btn.innerText="⏳ CONSULTANDO...";
+    try{
+      const r=await fetch(URL_MI_NUBE+"?lef="+encodeURIComponent(lef));
+      const datos=await r.json();
+      if(datos.ok){window.open(datos.url,"_blank");}
+      else{alert(datos.mensaje);}
+    }catch(e){console.error(e);alert("Error al consultar Drive.");}
+    finally{btn.disabled=false;btn.innerText=t;}
+}
+window.addEventListener('load', () => {
         const hoy = new Date().toISOString().split('T')[0];
         document.getElementById('fecha_hecho').value = hoy;
         setTimeout(() => {
