@@ -1,12 +1,14 @@
 {
-  "name": "App Científica",
-  "short_name": "AppCientifica",
-  "description": "Aplicación de App Científica en GitHub Pages",
+  "name": "Científica Brandsen - Gestión de Reportes",
+  "short_name": "Científica Brandsen",
+  "description": "Gestión de reportes multi-acta - Policía Científica Brandsen (D.D.P.C. La Plata)",
   "start_url": "./index.html",
+  "scope": "./",
   "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#000000",
+  "background_color": "#050a12",
+  "theme_color": "#050a12",
   "orientation": "portrait",
+  "lang": "es-AR",
   "icons": [
     {
       "src": "icon-192.png",

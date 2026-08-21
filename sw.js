@@ -1,4 +1,4 @@
-const CACHE_NAME = 'app-cientifica-v9'; // Pasamos a v3
+const CACHE_NAME = 'app-cientifica-v10'; // Multi-acta + PWA
 const ASSETS = [
   './',
   './index.html',
@@ -9,7 +9,7 @@ const ASSETS = [
 
 // 1. Instalación y actualización forzada
 self.addEventListener('install', (event) => {
-  self.skipWaiting(); 
+  self.skipWaiting();
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
       return cache.addAll(ASSETS);
@@ -17,7 +17,7 @@ self.addEventListener('install', (event) => {
   );
 });
 
-// 2. Eliminación de cachés antiguas (v1 y v2) de la memoria del navegador
+// 2. Eliminación de cachés antiguas de la memoria del navegador
 self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches.keys().then((cacheNames) => {
