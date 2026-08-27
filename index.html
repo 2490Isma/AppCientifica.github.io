@@ -150,6 +150,8 @@
         }
         #print-area { display: none; }
     </style>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#050a12">
 </head>
 <body>
 
@@ -1393,7 +1395,14 @@
             <div class="firma-contenedor">
                 <div class="firma-bloque">${FIRMA_DOCUMENTO_HTML}</div>
             </div>
-        </body>
+        <script>
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./service-worker.js');
+    });
+}
+</script>
+</body>
         </html>`;
 
         const blob = new Blob([contenidoHTML], { type: 'application/msword;charset=utf-8' });
