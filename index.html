@@ -3,12 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#050a12">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="Científica Brandsen">
-    <link rel="manifest" href="manifest.json">
-    <link rel="apple-touch-icon" href="icon-192.png">
     <title>Científica Brandsen - Gestión de Reportes Multi-Acta</title>
     <style>
         body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background-color: #050a12; padding: 5px; color: #333; margin: 0; }
@@ -99,10 +93,25 @@
         .btn-remove-row { background: #d9534f; color: white; border: none; border-radius: 4px; width: 32px; flex: 0 0 32px; font-weight: bold; cursor: pointer; align-self: center; }
         .btn-add-row { background: #6f42c1; color: white; border: none; padding: 8px; border-radius: 4px; width: 100%; margin-top: 8px; font-size: 0.7rem; font-weight: bold; cursor: pointer; }
         .area-block { background: white; border: 1px solid #ddd; border-radius: 6px; padding: 8px; margin-top: 8px; }
+        .area-letra-badge { background: #25D366; color: white; font-weight: bold; font-size: 0.75rem; min-width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex: 0 0 auto; align-self: center; }
         #contenedorDatosPU { margin-top: 8px; }
         .bloque-datos-pu-acta { background: #f3effc; border: 1px solid #d9c8f5; border-radius: 6px; padding: 8px; margin-top: 8px; }
-        .especialidad-block { background: white; border: 1px solid #ddd; border-radius: 6px; padding: 8px; margin-top: 8px; }
-        .especialidad-block select, .especialidad-block textarea { margin-top: 4px; }
+        #contenedorDatosDossier { margin-top: 8px; }
+        .bloque-datos-dossier-acta { background: #eaf6ee; border: 1px solid #b9e0c4; border-radius: 6px; padding: 8px; margin-top: 8px; }
+        .bloque-datos-dossier-acta textarea { margin-top: 4px; }
+        .bloque-datos-dossier-acta select { margin-top: 4px; }
+        .bloque-datos-dossier-acta label { display: block; margin-top: 8px; font-size: 0.65rem; font-weight: bold; text-transform: uppercase; color: #1b7a43; }
+        .bloque-datos-dossier-acta label:first-of-type { margin-top: 4px; }
+        .especialidad-fija { background: white; border: 1px solid #ddd; border-radius: 6px; padding: 6px 8px; margin-top: 6px; font-size: 0.75rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 6px; }
+        .especialidad-fija .esp-check-label { display: flex; align-items: center; gap: 4px; font-weight: bold; }
+        .especialidad-fija .esp-pn { display: flex; gap: 10px; }
+        .especialidad-fija .esp-pn label { display: flex; align-items: center; gap: 3px; font-weight: normal; }
+        .especialidad-otros-campos { width: 100%; margin-top: 6px; display: flex; flex-direction: column; gap: 4px; }
+        .especialidad-otros-campos input, .especialidad-otros-campos textarea { width: 100%; box-sizing: border-box; }
+        .perito-fila { display: flex; align-items: center; gap: 8px; background: white; border: 1px solid #ddd; border-radius: 6px; padding: 6px 8px; margin-top: 6px; font-size: 0.75rem; }
+        .perito-fila .perito-label { font-weight: bold; flex: 0 0 auto; min-width: 90px; color: #1b7a43; }
+        .perito-fila .perito-nombre { flex: 1; box-sizing: border-box; }
+        .perito-vacio { font-size: 0.7rem; color: #888; font-style: italic; margin-top: 6px; }
         .bloque-accidentologia { background: #fff5f5; border: 1px solid #f1c0c0; border-radius: 6px; padding: 8px; margin-top: 8px; }
         .campo-accidentologia { margin-top: 8px; }
         .campo-accidentologia:first-of-type { margin-top: 4px; }
@@ -111,7 +120,7 @@
         .lbl-evidencia-area { display: block; margin-top: 8px; font-size: 0.65rem; font-weight: bold; text-transform: uppercase; color: #6f42c1; }
         .btn-add-evidencia { background: #8a63d2; color: white; border: none; padding: 6px; border-radius: 4px; width: 100%; margin-top: 6px; font-size: 0.65rem; font-weight: bold; cursor: pointer; }
 
-        #btn-pdf-container, #btnAddActa { display: none; }
+        #btn-pdf-container { display: none; }
         .splash-org-text { color: white; margin-top: 14px; font-size: 1rem; font-weight: bold; letter-spacing: 1px; text-align: center; }
         .splash-clock { color: #25D366; margin-top: 8px; font-size: 0.85rem; font-weight: bold; letter-spacing: 0.5px; }
         .reloj-app { text-align: center; font-size: 0.75rem; font-weight: bold; color: #007bff; margin-top: 4px; margin-bottom: 8px; }
@@ -125,8 +134,11 @@
         #sintesis { height: 100px; resize: vertical; }
         .historial { margin-top: 20px; background: #f4f6f8; padding: 10px; border-radius: 6px; font-size: 0.75rem; border: 1px solid #ddd; }
         .version-tag { text-align: center; margin-top: 12px; font-size: 0.6rem; font-weight: normal; text-transform: none; color: #aaa; }
+        .creditos-tag { text-align: center; margin-top: 4px; font-size: 0.6rem; font-weight: normal; text-transform: none; color: #aaa; }
         .hist-item { border-bottom: 1px solid #ddd; padding: 10px 0; display: flex; flex-direction: column; gap: 5px; }
-        .btn-edit { background: #007bff; color: white; border: none; padding: 8px 12px; border-radius: 4px; font-size: 0.75rem; font-weight: bold; cursor: pointer; align-self: flex-end; }
+        .hist-item-botones { display: flex; gap: 6px; align-self: flex-end; }
+        .btn-edit { background: #007bff; color: white; border: none; padding: 8px 12px; border-radius: 4px; font-size: 0.75rem; font-weight: bold; cursor: pointer; }
+        .btn-borrar-hist { background: #d9534f; color: white; border: none; padding: 8px 12px; border-radius: 4px; font-size: 0.75rem; font-weight: bold; cursor: pointer; }
 
         @media print {
             body { background: white; padding: 0; }
@@ -138,16 +150,6 @@
         }
         #print-area { display: none; }
     </style>
-
-<script>
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-      navigator.serviceWorker.register('./sw.js')
-        .then(reg => console.log('Service Worker registrado', reg))
-        .catch(err => console.error('Error al registrar el Service Worker', err));
-    });
-  }
-</script>
 </head>
 <body>
 
@@ -194,7 +196,7 @@
         </div>
 
         <label>🔢 LEF/A.R.A</label>
-        <input type="text" id="acta1-lef" value="4436-00000-2026">
+        <input type="text" id="acta1-lef" value="4436-00000-2026" oninput="refrescarSubtituloDatosPU(1); refrescarSubtituloDossier(1)">
 
         <label>⏰ Horarios (Solicitud / Salida / Fin)</label>
         <div class="row">
@@ -250,14 +252,15 @@
             <button type="button" class="btn-add-row" style="background:#25D366;" onclick="agregarAreaLabor(1)">➕ AGREGAR ÁREA</button>
         </div>
 
-        <!-- Actas / intervenciones adicionales (solo en modo edición): quedan al final para no mover
-             los campos de arriba al ir completando la labor pericial -->
+        <!-- Actas / intervenciones adicionales: disponible ya desde la primera carga (puede haber
+             más de un LEF/A.R.A desde el inicio, no solo por ampliación), quedan al final para no
+             mover los campos de arriba al ir completando la labor pericial -->
         <button type="button" id="btnAddActa" class="btn-add-acta" onclick="agregarBloqueActa()">➕ Agregar otra acta / intervención (L.E.F / A.R.A)</button>
         <div id="contenedor-actas-nuevas"></div>
 
         <button class="btn-wa" id="btnMainWA" onclick="enviar()">🚀 ENVIAR WHATSAPP</button>
         <div id="btn-pdf-container">
-            <button class="btn-pdf" onclick="generarPDF()">📄 IMPRIMIR / DESCARGAR PDF</button>
+            <button class="btn-pdf" onclick="generarPDF()">📄 EXTRACTO (IMPRIMIR / DESCARGAR PDF)</button>
             <button type="button" class="btn-add-row" id="btnCargarDatosPU" style="background:#6f42c1; margin-top:5px;" onclick="toggleDatosPU()">➕ Cargar datos para P.U</button>
 
             <!-- Datos para P.U. (solo van al Word/P.U., no a WhatsApp ni al PDF): se despliega acá mismo,
@@ -265,6 +268,19 @@
             <div id="contenedorDatosPU" style="display:none;"></div>
 
             <button class="btn-word" onclick="exportarWord()">💾 GENERAR P.U (Exporta a Word)</button>
+
+            <button type="button" class="btn-add-row" id="btnCargarDatosDossier" style="background:#1b7a43; margin-top:5px;" onclick="toggleDatosDossier()">➕ Cargar datos para Dossier</button>
+
+            <!-- Datos para el Dossier (solo van al Word/Dossier): I.P.P. una sola vez
+                 para todo el reporte, y un sub-bloque (Resultado/Labor desarrollada/Peritos) por acta -->
+            <div id="bloqueDatosDossier" style="display:none;">
+                <div class="subtitulo-dossier" style="color:#1b7a43; margin-top:0;">🗂️ Datos generales del Dossier</div>
+                <label>I.P.P./Causa N°</label>
+                <input type="text" id="dossier-ipp" placeholder="Ej: 06-04-001800-25/00">
+                <div id="contenedorDatosDossier"></div>
+            </div>
+
+            <button class="btn-word" style="background:#1b7a43;" onclick="exportarDossier()">📋 GENERAR DOSSIER (Word)</button>
         </div>
         <button class="btn-reset" onclick="confirm('¿Limpiar todo el formulario?') && location.reload()">🗑️ LIMPIAR TODO</button>
 
@@ -273,7 +289,8 @@
             <div id="listaHist"></div>
         </div>
 
-        <div class="version-tag">GRP Brandsen v2026.08.19</div>
+        <div class="version-tag">GRP Brandsen v2026.08.21g</div>
+        <div class="creditos-tag">Desarrollado por: Subcomisario Betanzos, Federico - Programador: Sargento Romero, Ismael.</div>
     </div>
 </div>
 
@@ -292,8 +309,14 @@
     let contadorActas = 1; // la 1ª acta ya existe de forma fija en el formulario
     let modoEdicionActivo = false;
     let mostrarDatosPU = false; // "Datos para P.U." (especialidades): solo se ven al tocar el botón
+    let mostrarDatosDossier = false; // "Datos para Dossier" (labor desarrollada/peritos/resultado): ídem
     const FIRMA_WA = "*FDO: CRIO MAYOR SIOME ARIEL. DELEGADO DEPARTAMENTAL POLICIA CIENTIFICA LA PLATA.-*";
     const FIRMA_DOCUMENTO_HTML = "Federico A. Betanzos<br>Subcomisario<br>Jefe Sección Pericial BRANDSEN";
+    // Logos del encabezado del Dossier (solo se usan en exportarDossier()): Ministerio de
+    // Seguridad/Gobierno PBA a la izquierda, escudo de Policía Científica a la derecha,
+    // igual que en los Dossier reales que envió Federico como referencia.
+    const DOSSIER_LOGO_MINISTERIO = "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEAYABgAAD/2wBDAAMCAgMCAgMDAwMEAwMEBQgFBQQEBQoHBwYIDAoMDAsKCwsNDhIQDQ4RDgsLEBYQERMUFRUVDA8XGBYUGBIUFRT/2wBDAQMEBAUEBQkFBQkUDQsNFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBT/wAARCACEAdEDASIAAhEBAxEB/8QAHwAAAQUBAQEBAQEAAAAAAAAAAAECAwQFBgcICQoL/8QAtRAAAgEDAwIEAwUFBAQAAAF9AQIDAAQRBRIhMUEGE1FhByJxFDKBkaEII0KxwRVS0fAkM2JyggkKFhcYGRolJicoKSo0NTY3ODk6Q0RFRkdISUpTVFVWV1hZWmNkZWZnaGlqc3R1dnd4eXqDhIWGh4iJipKTlJWWl5iZmqKjpKWmp6ipqrKztLW2t7i5usLDxMXGx8jJytLT1NXW19jZ2uHi4+Tl5ufo6erx8vP09fb3+Pn6/8QAHwEAAwEBAQEBAQEBAQAAAAAAAAECAwQFBgcICQoL/8QAtREAAgECBAQDBAcFBAQAAQJ3AAECAxEEBSExBhJBUQdhcRMiMoEIFEKRobHBCSMzUvAVYnLRChYkNOEl8RcYGRomJygpKjU2Nzg5OkNERUZHSElKU1RVVldYWVpjZGVmZ2hpanN0dXZ3eHl6goOEhYaHiImKkpOUlZaXmJmaoqOkpaanqKmqsrO0tba3uLm6wsPExcbHyMnK0tPU1dbX2Nna4uPk5ebn6Onq8vP09fb3+Pn6/9oADAMBAAIRAxEAPwD9U6KKKACiiigAooooAKKKKACiiigAooooAKKKKACiimlgFJJwBzQA3efw9xR5nPPA96wbXxzoN3HO0etadMLdDLM0d0jCJB1ZsHgDI5OKpn4oeDywDeJtHOTgYvY+v51XL3Ry/WKWl5r8DqhJ04JP0rL8Q+Jbfw1p5u7pXddyokUK7pJGJwFVe5pmneK9J1e3aew1G1vowNxNtKJOPXivL9c+IDa1Jp0l0tr/AGGurRTW+tWkpeFQrZ8ubIBicDruwKuFNy3McRioU4+69fvNdviF4xNxrFovhlFvIoVuLUksYIkKk4lk/jk4+5GOvG7HzVVsvjTc/wBp6ONTtYdJ0+4tPPn+0JJ9pYleCsYBKLuDAbsk46Ctvxdrlh4G07RnaLUNQVHPlPBdhQVSJnLTSO6qU25++Tzg9ea4hNa1D4j6x4nn8OM2kX8mi2yWksssUwY+fcBsNHKVB/hBzwcEdK6YqMldx0PEr16lGcYRqtz/AJfx/wCB5nqOifEXRPEWofYtPvlnutjSmIxOhCggE/MBn7w/OukEhwT1HtXiumv4j8Lat4LTV7SfxLrCaVeRT/YSikHzLYklndVJAHPPJJxXovhbxgfEVzqFrNpd5o91YuiyQ3fl5IcZUjy3YHjg88GsalPl1R6uFxcqrcKmje2j7L5HU0tFFc56wUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAhOKqakSLC5xxiNun0q0aq6l/wAg+6/65t/6DTW5lN+4z4h0o6loz6a9g1/b6yNFFzdfZRE8V3afIyAMQRCgRT8zLnIPHIr2j4YabqGm+Frzxt4ruZ5rCW1+02+jvBA7xxcEFmVF3Mcjpj6VwHwr0U6w1zotg8dwbzwxcgXogMbvLI8e5ZHJPmGMlVB9OOec+i3usXXjz4HwWWi2ry6nZJbJf6W6tG+2MjemByQdnGzOecZr3MTO9oo/LMroQjzVnq1GVl0cl272/Hco+KdRt9V1W+C+F7Pw/NZjcLt5Wt9QyIWmJV4M/wACn+I81PJqNxpsscOr6i9xo9tcMlxqVrGpDfu1Z472Erh0ZHX98B8pI3Ac1zFlbXkN7dwy29zZXF+mbbSrW3WeWdQrQl2Sf5oEZccyY4b2ro9O8R3S6utpJqPhaw1hJBG0OpXZubpXdEUh0iEaLkRr3YDAGeax5dPdPThUlUfNPR9n/loJc6LcpBavbW7rpsM7ra6Vc38at88bKr2NwcgqUc/Ie47VHFqFlol5PGo8SaYj29pAIru2uvtB23Ujy/PGpBHlvjg1qW/wk8VWNxM8Fz4dvNIlIkfRJrGRbQP1Dx5ZvKPb5OPaq/iHxlqHhW9vzqWlaj9tvYvIjsdO15HG9sc28TBXVuOy0lK/urVGzpxpfvKy5L7XX9fcibRp7/W/FFha6Yuq6fcrDeumqaxEzH7M0sRAiEpLs65jUbsDrkHjFzU9En+HV3pXiWfUdTnCXQtZ9Ne9kuBIjNIhdFxl2+dXYY/h4xWh4b8PeNHgtJ0XS9KeCJ0jfVJZdSvMM24q7qyL1APBPQVJe6B46Hiaz1qa38O67JaQSQRRJ5loy7ihZgzCTB+UjPoT61zuWvkehGk+TnlGXN0etvuv/wAObel/FVtQ8TW2jTeH9U0ySdGKT3sarGSAxwCGO47VJ4ru1fHDEZrxfXdV1AWWlQHwFq9k1nqMV2rWvk3KIBNufayyZ5yeMd8YrotK+KF9qPiWwsZtE+w2d87QwtNcIbkOqNIxeNSQqgKB13ZYcVlKnzK8Voejh8dGnJ069S7b0urHpVFMD7vu4P40+uY94KKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiimB927BHHHPrQA7dRuphIHUjH1oz9P8A6/pQA+jNReYMdRnOPxpwOaBfMfuo3UzeOfbvQGHc/jQF0Po/Ko93cEMPQd6dn3GPWgWncd+VGaYGB6EY9RRn8KB/Mfuo3UwnAOfl9zQCTnpj25oGO6mq2oqWsbhVG5jG3H4YqyOtQ3YH2aTLFcoRkdaa3In8LPDvhF4Pm8F21hrN3q0aaXYaKxmsbhdstjJIUklzj+H92x55yT+F3wnceE/H/jYat4S1C0tjblLq+SC1lhuJ92/GWJCsjZ5+U5x1rivhx8H7nxn4LTULXVL3w/NfrPZ390VaU6rAc7Zirn5W5Iz1613GvfBbUbjVIrnR/Ec2kWsunw6XfRpDl3gjLHKPn5G+Y9F716cvZ88ouXvfgfD4aOJhSpezoe4nfzd+3bpc1/jTKNI8EX91amO0nu2gsp7uMpG4iaTbw7EKMBmwWOBnnNeJQeGtKf4UXfiN9dhS/t55THo2YvsRHnqwgMPU+Zsic4IHIxgcV1fww17RB4f8S6Bf6vmxvLuay0zw/fXeLtVGUKZJ3KzscgZyO1eazRD/AIS+2G6OJpIWuw00yG9jIeJhGZgu8SqUCgFCdvGM810UIuH7u/W9/I8vNKyrtYjkTvG1r7N7P/hz1Dwd4mv5PAdhoUF89usupPYJfKUZ4bSOITykMm5CQAUBBxkj0NbXgH4eXOq6Vba7YXq+GIb1BPaQ2FpDJM0Z5R5ppVd5XIIPUD2rA0zwHB4s8bWGkC61bQ9O0zQorgWVvdgPaTzswdHOCCzKTnPr9KXR5b+1+DNtbLquoGdfEQ05/wDSHWZI1ufK8oMvP3FA4A4JrKS6Q0Z24ec2v9og5Rim1rvy2uvx09DZ+IWteKtN0y50VfFEGp6xcWzR2un6NZNFeux+67t5v7vtlvlFaXwKt7mN9XurrxDLqu7y4DYTPceZZuu7cHSd2ZSxI9uOtY/w7v8A/hFBr21VOqXWrx24l1WaUEf6HFIS7uN5UEFQPWqHiy6g8WeLNK1O2aS2vJtGZpf7NupYnBE8YwzwkMyjnBbI9qn2fN+7t8y44mEKqxkpNyX2Ob+vuPRPiVZ+NZY4rzwzqkFrbW6M0tkLZTNNgnhZHDBSRgYKde9eZeHtIsdAh1b4gILPWLyR4l0oWIe3me8kJiZJo92F3M8YKAkZUnAHFa2qeK9a1P4b+HdDh0XVNTbUtIt3utaVJJFiygLkGNt7SZGcZX/eqjYS6bZ/Cvwrd2Oo3Gq2vh7WIbu7kubcRSCISMjExqOFXeeTk/KTmiMZRhy2NMRXhUxHtE7e7za62b/l72Tu/Q928NQahaaFYxarcC81JIkE84XaHf8AiwPStjNVILlLhEkSRXRl3Ag8EHoRVjHWvLe+qPt4W5Y2d/MeSR2zS143b/E7xl471zWIPBekaaulaXctZyX+qyuPNlXltqoRxj+Yq94p+JfiSw1/QfCej6XYXniu8sheXhnkZbW2UDDHg7iN3T2pGh6tSAk9sV4o3xz1vR9O8YWOuaVY2vibQbT7aiwyMba5iLABhk5HUd6j8NfGTxG3iHwpY6vFod5B4ijZ4hpM7tNb4RWy6ueg3HPToaAPcKK+eh+0J4juvCnhu/trDSUv9Y1abTgLlnSBFTbhi2/jqa2PEvxW8ZeDvAup67fw+G7+WKeC3tRpk0ssZZ87t/fuuMEd6APbaK8i0/4n+JtF8XXHhrxJZ6U94dKl1O3uNLeQoAm7iRXwR0rD8H/tIXPib4b+I9XksbW28QaRA1yLQ7hDPHxtdctkjOVPPXHrQB7xS141c/F7xFrmpeH9A8MaZp8+tXukRatez30jpb2yuqnaFHLfeHfuK6D4Z/EzUPFGsa74f1/TodM8QaM8YuFtnLwyK+SrISc9AOv94UAeiZ9uaWvGbv4keOtW8f8AinRPDenaLPBoZiB/tCSRJJt6BuCpwOc9qzNR/aK1G68IaBqOlaZZ2up32rf2RdW+puRHbSgDOWDDjkHPpQB7zRXE+Ade8T6qLuTXj4flgXCwyaHcSTfN3DZzioPAXxBvPFnivxppVzbwQRaHeJbwtHnc6ndktknnjtigDvaK8i+MPxg1rwPrEGm+H9MtdTuY9Pl1O9FwHPlQowUEbTx/F19q9I0fXYtd8P2WrWpBt7u3W5jz6MobH86ANTPtzRn25r540z4+eMF8H2njTUNJ0iXw3JefZJYrWSRLlPm27huJU89q19R+LnjGfXPG39kWWinS/DDDzvtzSpJKu1mODkAHCHt/EKAPcBS14u/xx1jxRceG9L8JaRay6xqunrqU/wDaUjLDaxEdyvLHPp6is3VPjz4l0PS/Eltf6Jp8fiPw+0M9zAkjtBcWrsFLxnOQV3LnJPfigD3qivOfFfxRnsbzwTZ6JBb3tx4juFIEuSEtgoaR+CMEA8Hp7V55qP7SWuWHgqPW10myuJjr0ulGCMSfNEiqSRz97nr09qAPomkyfSvLpvjOl14l8EQaaLefRfEFvczyXLgl4/LTcFGGwCD97IP4VleFviZ47+IudV8OaNpFv4bM7RRS6nO4nnVWwzKFOB+IoA9noryvw/8AGOe88O+O9W1G2t4Y/Dt7PbReVkeaEHG7JPJP0o+D3xV1nxvf6npniHTrXS9Ut7e3vYY7YPiSCVchvmPUHj60AeqUV5Z8RviH4k0nx/oXhXw5a6bJdalayXHmaiXAXbuz90j0FYdx8eNa0nQ/GNvq2jWdn4p8OwJcNAsrNbzozKAynrj5vWgD2+ivK/h9418aeJr+wk1H/hFzp08Jmli066ka6jBUFflOehIB9/SvVKACiiigCJ5GAJHtivFvHfxl1TwZ8Z9J0N4oX8NyWcUl5KVO6EyTNCrk5wF3bOo6Zr2rHJFeceJ/hDZ+LfGmoavfz77K90U6RLZqvzD98ZBKHPAIzxx1ropOCl760PIzCGKqU4rCStJSu/Q4TUfjvrkvjPxbb6fDbLounaRe3NnM6FjLLBgF8hsFdxZeP7p5qGD9oHWdO8V+Fo9UggOh3uiWl7f3EcZzbyTsVEmd2AgbGcg8HrXVX3wHs1Ig0y8NjapoFxoipJHvY+aS3msQRkliSeByak0T4H21pexnULpdRsT4dh0CW2MW3fsIJkyT09q6+fDcux859Wzjnvz6c2/Tvb0vp6HOxfGnxBLq0VuPshifxlJogKxklrYKGXBz97Hf9Kj8E/FHxV471W5tk8Q6Jouoh5o10G6smM8YUsqtkuN3IXIA6Zq74Z/Z3fw3aaTarrhuRp2v/wBt+ZLB80g8vZ5ZO773fd+lbCfCbWtU8aaRrGv6/a3yaTMZ7WO005beRmxj533HI74AFKTodGgpU8zbjKq2tdk9LO3Xy/Ex/Cviz4h6t4r8S6dd6vpH2fw9JElx5ensGuA0ZkO35+DgD1rN+FXxd8QeN/7Nlu/FWi/aJY5ZJNIi051mIQNnD7yOgB6e1el6F8P20PxF4z1P7aJv+EhljZYwhHkbYinJzz1rmPAPwl8TeB7DT9LHiizutItlZDD/AGSFldWJJ/eeZ8pyc9DSdSi09lsbxwuPhOnecmvfvr/e938DjvAvxz8Sau3hK4u9U0jVDrt0befSLaALPaLlgJAwc5UbeSQPvCtG0+NXifV7W20yyjshrep69d6Zb3EqMIoLeDBMjLuyzbfQjntW34V+AQ8HweF5tM1NLfV9JMkNzdLbbVvoGYkpIobOQNpBLHGB1pF+ALwaWgtdbNvrNprE2r2N+LbIiMp5iZSeQehOelXKWHcrpaHNSw+cezSlJ3W+u693bz3Xqa3grxp4htfiBqHgzxNLZ313HZJqFrqFlE0QljLbSrISdpz71hXHjPx7rPjDxta6FeaXFaeHniSKzurQs1zui3kbg4wcg8/Suq8EfDi80TxNqHiHXdY/tvXLyBbUSRweTFDCDnaqZbvzyTWDqXwf8RP4m8U3+leKotJs/EDo1zClgJJVVYwgVXL4B+92PWsE6alK7R31KWN9jB2lfmlomrqPK7X9HY5K/wD2hNT1S68MvZ6np3hew1PTXu5JdQtGuAsqyFDGNrDAyp5r2/wPqFzqPhiwurzUbbVZpU3/AGy1hMSSKeVwpJI4x1NecXPwGutM1HQ7vwzrcOlppemnTgl5Yi48wF9xcjcoB6np3NeneF7DUdO0SC21S8ivr2PO6aCHyUYZ4AXnFFeVFxi6JrlVPHxqz+uXa6O+j22/E3AO9IR154xS1BdIXtZVBOSmAV61xH072OG+Lsmt2vw41Z/DCSHVViHlLbIGkUZG7YOm7BOBXFfAGfWZ7/Xw8+tXPhpEh+yT6+CJjP8A8tcE87elY+k/DXxlqtjbxyjUvJjRUjOt65LASoAH+ptlwucd2JrJ1fwzd6VfPotxcRSX86+UbPSvFlzDdMp/uRz5DdG6EdK9aMIul7PnWp8HiMVWWIhi5QlGK0tdJX1679Sv8TL248ZfEm88PeGNFsrwWzwXlxeWFvGJ3lVg3zzscJyOwz71reItb8UJ4tjun1PTItditHt00nQ9Ok1KVUZgx807lVeVGCxA9q5qx8PWujzRaZDZzx3kAxHaug03XIx/ehmQ+XdD2JqG1imtLWy0wBdV0S6lW0t1RvsMT3OcMNSPMvmeijg+ldaVldW7HgynUjOcqt05u+myXp/mL4W8V+NPCGuau51nQpb6/n8+e2nge8vWOMANHa79gHYc1Xtri/vNe1W78bWut+G/DN9dx3btpsbQwfaBj945b96mSATjHNe06D8G5IbNU1XWJLa2AyNM0BBYWqe25Pnf8WFc/wCINP8AA3hjxfZ6BL4Kgv8A7XZzTx6lfobhXeJWYxb3DknCnOTkccGsVWg37sbvyOueV4iFOHt6jUd0m317pd+up1uh/BT4dzWi3troljqa3GJPtcrm5MnYNvYnP51PefAbwLc8x6FDZMVx51i7wPjrjcjA4zzjpXm3w60/S9ZtdLk0zWtQ+HWr6zG1zFoVldpLE0a/xrFIhAyPmAAHHavQZ/hAYYpbyLxh4hTV1Bdb6e93ICPWIYQr7YH1rjneM+XnZ9FhuTE0U4YZSS3d1/w/yZxmnWmqeDo9W0yDVVv/AA/pyy29zoN+RLdG3EW9PszoFZyynG1uhBFc1odxc+Ara0vI/A4toNezHd+Zb52WoG5oY4uuCuSXlZRknjtW7feHPEeh6XJbT+C7S61KC4W9HiOyuYQZXWbzGd/NKsu75sgkgbqvP8QtU8fwXWi3l34Z0u21WCa1WJL2SSdS8ZVSkhURyHdj5VzxW10vM8hwSbXM4TjsrXS18/001Z0vwiuP7Nt7S2iu3h0fU4Bd6bpWo4+2Wq9SBgnMeCMZ5HOSa9Yxx9K4D4XeCD4c0KC81WGOTxNcRg392CGYuf4FP8KjOAFwOBXfbsjOOK4arUpaH2mAjOOGipnz9H4U8dfDqw8XaHoGkR63o+tyXM9ndwXggms5JF2jcD1xx09BU1v4E8Z+FtT8H+LbSxGs6ra6Mul6np012BK+Od6ynuT1zmuf8Ufta6npnizUdA0fwit7cWlzLahjO7NIUJ5CBAcYB71BD+17rOi3ES+JvBFxp1vJwHzJG5A6kLIgBHtnNdKwGIsm0tdjxXxRlqqOEpvTdqLsrb6m9qXw28XeLYPHniTUtMi07V9Y01dPsdKS5DlI1KnDt0zlR0A6mq/gz4aa5beIfCF1beEovB7aVtGo6kt9G0l8qqFZSqHo2CTn1Neh+K/jDZ6X8J5PHOjwLqtqVjaOMt5ZbdKsZBz0KknP0NR/A74tyfGDw3f6lLYJp5trs23lRTeZnCq2c4H96ub2E+R1GrJO3zPWWZYV4mOFjK85rmXax5Mfg74pj8DeFLGfw4mpTafrVxe3enPcxqskLYx827HbtW14o8B634h+Gur6BpngCHwrJJd28wgivIpRcYzvOQ3GNqV3nx2+Lsnwh0LT9Qi05NQa7uPIMck/lbRsZuuD3Aqhf/G2W0+BkXj8aYjSOiE2Qn+XmUJ9/b/SnGhOUFJLd2+ZNXNcLRq1KEpe9CPMzM0T4U3fgHxxro0fTRfaDrOnvFDcPIDPYygHEW9juKNnuT1HNcprPwG8QXHwh8P/AGG1Fp4usreWzubZZFAngkldirN0O3Kkf1wMZMP7aGozIxi8FxyLnGVuiwyMHBKxnoCK6b4e/tSan408YaXok3hMWMV3IUabz2bZ8uehjFaywVeHNzW0PLocTZdiZqFOTu/7rsalr4L8V+AfEWg+J9H0qPWpv7At9K1LSzcCGRHSNPmjY8HmNR+Brpvhf4Q1238XeJfGPiS2i07UtZMccdhDKJBbwooVdzDgn5R+VcN8Q/2rX8B/EDUNAk0BLuCylRGuFuQHIZVY/Lj3r3fRdctPEOlWmpWMqXFncxiWOWPoy9axnh6lOKm1oz1MJmmExtadChO8ofEvTc8iisfG3gv4peNdW0jwqNZt9cNuYJmvYoVUpER8wJz1PbFcvrHwR8Raf4K0C3/s6HxFqX9utq+qWiTKkRVgoMQZu2FAz9a6jR/2iZ9X+Msngc6LEsaXU1t9t+0ZJ2Izfcx7V2fxV+L2ifCbSY59SL3F1OGFvZxDdJKR/Ie5p+wqKSglqxQzbB1KU60Z+7B2k337Ff4TWFzpA1G2bwLD4Nt2ZZP3N2swuH9eBxXIaHa+OfAvjrxtfab4PTW7LWL5Z4Zf7Qih2oM9jn1NcDJ+2frc5aW28IwmxzlW892493CbVr1r4Q/tBaN8Vnkso4X0zWYl3NZztnco6sjDhgO9a1MJVpJyktjhwvEWXY2ssPTqe89tLJ+ncwYPhHrfxA8XeJPEHiG61LwwbyNLO3trC4Q77fywHVzg5BYZ4x1Ndn8GNE1vwt4DOg6zCEk0+ee3tpC4bzoNxKP7D5sY9AKyPi/+0Jo/woljsWgfUtalXeLWFgionPzOxBxnHSvKI/2xfEn+uPgtZLTP3llkxj/e2f0qaeDq1EpR69x4riHL8JVdGU7taPlV7M7f4T/s+rF4X05fFpv2ngunuP7He83WYYP8rbAOuOevWs3xD+z/AH3jDXPiHqFxbG0vLm5gm0idpfkl2bwyugOCpAUYNe4+CfEbeLPCmmawYGtje26z+SxzsJHQmtxo1YdBn6Vyy00PooSVSMZI8Kfw34v0fxLoPjbS/DkBvV0oaZqWgpcpEI8HO+J87SOnGOwrS8KfDnWPE2u+MPEXiyzh0yXXbM6dHp0c3neTBtAJZhwW+UHIA57Vi/Fz9pt/hz43k8PWeiprEkMKyyv9p2FGILEYwei7W/Ous+BnxmT4v6VfXBsk0+7sphHJAknmfKw4OcDuD+RrplhqsaXtLaHi0s5wNbF/U4z/AHl2vK63RynwU+HPizTfFdnf+KrNYIdD01tO08rIr790hJbg8fKcduAKy9H+E3im20bQrebTCHtvGDanOpmQj7MwAL/e6cdOtd/8dPi6/wAH9F02+i06PUBdXIt9rzeTt+UnrtPpUS/G4p8Ek8fy6WNxTcbJLjv53lY349fapVCpKKmlo3b5m88zwsK1ShKVnBcz9Dk4vghqmj/GaxuLGNpPBoFzKqb1AtGmjKyKo/3sY9q0fh9ZePvhRpg8MReF4df0yK5b7NqkN6sJETHJ3IRnP0xXB237XHirWQ8um+BWuYUbDNCZJtvQ8kIBnBBrt/hn+1PpnjjWodE1XTJdE1WVhGgZvMiZ+6E4BU/UVpLB1o3dtt0eXh+J8sxFRQU7X2umkzGvPhV4svdE8S6J9iMNpr/ik3VxcrLH/wAeJOS+N3U+ldLpfwo1bwH8UtA1nTb/AFHX7CWF7G/k1CdWaGPH7sAADKg89+atfHb46TfBttHWLS49T+3CXO+48raV247Hj5q8xH7Z2rSAFfBB2kcMtyxDjqMHy/SinhKs4qcdntc1xfEWX4StKhVn70eiR6b8StG8UwfFXwx4o0TQX1uCwsp4JYUuo4DubOOSenNc5rfwv8XeKNL8e69qVjBBrmuWsFpZ6TbXAdYo1kTO5zgZwgP51tfB/wCPs/xIm1iPUtFOiW9hEs/ntKWDDPPJVe1cV4m/bLiXUZbPw34fk1SFGKi5lcgSY6kIATj60LC1ZTcEtV9w58QZfSoRrzn8eytr9x2nwl8OX3hnVtPR/hvbaEwtxBPrKX8cjH5FJ+Qc8sozXtwbNfO/wp/aT1jxv42s/D2p+GjYNdBts4d127VZzlWX0HrX0MDwQBWFalOlK0/wPTwOOpZhS9tQT5fPckopuT6UVieiBXI5oKe5p1FMVkRGAEnnGfT+dMkjKRsV+ZgvAPSrFNZcqRkjjtTuJrsfOHgDxzrN5rbJ4n8RalpviLbcM2hXNgkVq+AcCNyvzYAB+8aqfCzx/rOsabZ6tqniPxBeXUVpLeTWcmkqlpIE3ZAmEftjr1r0i0+Cqya5ZalrPiPVdfax3m0jvPKAhZ0Kk/KoLHB7mjwf8FZPBlrYWNv4q1S50a13L/Zc8UBhdWzlT+7Bxkk9a9SVWi46HxFPBZjGrG+ycru6/u6/g9jm/Amp6/ruj6B4v17xx9hi1WdRb6RBBELZ9zNshDEbmJCnnOah0zx/r8vwe+IOsnUHOpadf3sNpN5SlkVGAXC4wetb1v8As92Vlc6Ylt4i1dNG069TUINImdJI45FJI2sVLgcngN3pdT/Z+sNQm1OGLXtXsdF1Oc3N7o8DR+VMxIJwSpKg4GcGs3Ki3rt6Gqw2YRhFKGqTT97q425vvPMvEHxV1W013UY7vxhd6QLXSLK5s4La2jlFzcPHkq+UJ+ZtuOR96ui1f4l+LLedEuLk2F0fBk2pTWqouI7xTjfyCePTOK9AvvgnoWpX2vTTiV4NYs4bOS3AAWFYgdhQgZDDjnJ+6OKgm+CdrfN5t5rF9d3R0R9DeeQJueNurnA+/wC/T2qvbYfsYf2dma57T38/P/LQ4fTfFHi3whp3gLXb3xJNrmn+IZ7a1u7K5t418lpk3Bo2RVPB9c1S1D4zajb/ABSaZddt08O22tR6M+k5jDMDGVec/wAWBKfyFd5ofwJtdOuNKl1HX9U16HRwP7Ptrvy1igIXaGCqoywHQk0//hn/AMM/8IVN4fkiEs8pZ31iSOP7ZvL79/mbc5zS56G8h/Ucy5FGnLlS11lfWK29G9Tlpb/xf4s8deP4dO8Wz6RBoRh+xW4t4pImDwljv3KT1HrXpHwk8YzePfh7pGuXEQhurqL96q9CysUJHtlTXNXfwGW81rV76LxVrFpHqwjF/DbeUon2IEGSUOOB29TXofh3w9YeFtFtNK02EQ2VqgjjjU8gf5OaxqShKNkell+GxVOu51tnzX1397S3ayNkdKhupHitpGQbnVSQB3IqYUxjsU5BIwTwK4z6d7HzLpvjy7FpBcap8StV0bVJOZYbzQx9ljfvGN0QO36k/WtG512+0zWdM8Za8NG8X6LpcToNX0Pas0IcqBJJEzHOAWwEJ6mvSZ/i54UDvFqFxPpyj5S2pWM9umPTc6AVgeK/gt4P+ImkS3WiyW9hcXChxe6YymKZlIK+ZGvySLxyDXowqRcveR8XPCV1RcqE+drVdL+qd7k/jnxx8Pdb0uHSdSuI9VurhVa2sLJd92rEArsA5jfBHXb3968osvGM15rH9naX4eubi9uYjbT313El9cXQhdgplt43WMMGHEkmeOrGs+20qVNcnsPEekWdloWpT2lnFfeHbWJ4y3CIoJP7gNuc52k/MeRxXYXGkafp1u/9h31x4b0qN5fIWyJCTQQK3nTXJX95JukIUENuO4cV1QhGjotTxauJxONn7bSFtGre9+JHYeDfEmreP/C134i8T3TH7VLKLaKdWijaEf6pmUKu9s52hRgI/XFcrrGlNYWviLSdDudc8PIupR20Wo69PlXuzKQBAqrkFhuzID0HOc16N8PraPRviG0V5ZXNuLiE/ZpPtsl1breAHzsZOVdo9pIdQRsIz8xzg/FHxKPE3j2ys0tre70zTNQiiiZ5XRluBPCksg8tgesyL83HyNRCpJ1fIK+HoPCOcm+Zyta7vt+HyKPgy5udM8QWutQW2g6w2m4stb1i/wB0N9bPGmwkCRgFU4IUgYI7Vu3Ou+Kfj/4fktdPih0PRLqzkb7RDcb1ll3qPJlbYrRsoLZVQc44YVo6lLZWWoa9PpFvY6bHeX4gkSOyW5u9UugwySruo2A5XBxghsEcV1Hww+J9t403ae1i1vf20e55IIibZgG24VskoQeqtg+mawqyv77jqelhaEXL6pOq1F30W79GcZ4Z8O39/rnifwp4x1aSSyfTLNnjScwoMM6qYWLBnBCrvYgAscYq7aeINSabVdEvtMg8beGrP/RJrqygjjmD7Q3MRcLIQCoyoXnOB2HZfE7wSfEdjb6hZWcN5qlhkrbyKDHdxEjzLdweNrDBGc4IBrB8NfC/wD400aDV9N0GTRSWkiBtHe0mjdXZZFOxhzuU8/Ss1Ug1eR1vBVqdX2NK3u6pu7cl2fTS+v8AwTqfhHfT3vgPTpJnklAMscLzgrK8SyusZYMAclFUk+p7V2rc7hnAxUcNosEKxoWKqAPmbJP51K4G1vpXFJpyuj6inTdOjGEndrc+BtH8Yad4D/aQ1fXNVMv2O01S8EgjTc+GDqAMnHVh3rtfjz8fvD3xP8JR6BoVnd3NzJcxyedcRqojA7r8x5P4Vy3g6w03Uv2oNRttXt4LrTX1W+82K5AMf3ZcZDcdQterftD+Cvh1pHw9vZ7Gz03T9ZVkFqtntSR33qNpC9eCetfTzlSVek7Ny/A/EsNHFyy/GRp1YKDlLmi9/kyp4h8GXvgj9j3UbDUWT7YSkzorbwpe5Q7QenJPJ9zWx+xSC3w81nnIXVXA3EnH7qL/ABrjfBUOs+L/ANkrxTaSmWcWkxNtvyxaCLypSqnqfuuo96ufsf8AxE0XQNE1jRdRv7fT55ro3kBunCJIhVV4Y8E4UcVjV5nhasXq+a9j2MFVpLNcDXXuwdKyv313Oh/bbyPBOgjccHUDkA4ziJ6xNWXH7E9qwJziLnPP/H4O9Uv2wviJo3iKw0XRtMvoL+eCZrmY2zh1jG0qNzDgdTxW9400ebQP2N4LK4VlmWG1lKNwVLzrJtPuM4pU04UaCe/NsGMccRmeYVaTuvYtX6XscT+z98d/DHwt8IXemazb3813NfPOgtrdWARkRQOXHdTXvvw1+Ofhf4p6zPY6Lb3kVzBD57faoFXC5C8EMefmFeKfs16R8PbvwJqD+L10L7eNRk8v+03jRzH5ceCN2DjO6vePCUXw10HVCvhybQLXULlfJC2NzH5jjg7cA57Cscd7JyklCXN+B38OPGqjQcq9L2Vtvt2+/c+UvjH4cfxf+0nq2iwzCGe9uooUdvuq32dMZxzXoH7L3xHufCuuXnw78RboGSYrarMceTMOTF/wIgkfQ+orn/ED/wDGZMZHA/tO1OPX9worr/2rvhbNayQ+PdDVorq3dftphHzcY2S8f3cDJ9h05rsqSjUjTw9TS8dH5nzuFo1sNXxeb4fWVOrK67w7HH+CDj9sW5w3H9p3oxjoTDJz+lZ3xmLeP/2lk0W7kb7ILy202MA42xnZvA9M7jz9KofAbW7jxN+0Vo2p3m37Tdy3MsgToWMEh4/OtP482Nz8PP2g4fETQSS2k89tqcLIOD5e3eufX923HuK2tGGIjF/Eo2+Zwe09vlEqsU3SlXvLulY+yrHw/YabpkWn21rHDZRp5Yt0QbMfTvXxR48sYfhP+0hE+kqbe2S8t7iKOI4CrIoLqB6H5uPpX1tpXxf8I6tosWqReItNW2aMORJcorr7MpOQfrXyRq90Pjb+0fHNpccktjJdwBZCMYgjADSj1HyHj/aFeZgPaRlP23w9T7Liepha1HCxwbTqKUeXla2+XQv/ALSemXnhX44DxBqFj9s0qZre4iSY4hYR7d0Zbpztfg+te3+Df2o/AviQw2dy8mg3DqAI72ECLP8AvjIH/AsV33ifxB4NubiTQvEF5pbShQ7Wd/JGMZzg4Y/WvmP9pLwR8OvDejWd74XuLK31aW4VTZWV0HRkIPzBcnZzt+6R1p05xxUYUqqat1Rhi6WIyOticfg6sJxk7yi7c3oj7EsjD9nj+zFDAVBQRY247EY4p19fx6bazXVwwSGJDIzHsoGTXlf7L91fXPwY0Vr5pHYb1haU5LRByFP5UftO+LB4W+E2pIsuy71ArZxevzff/wDHA344rzPY81f2K18z7l5go5X9ftb3b2fe17foeF/AfTG+LPxx17xJqEbS2qCa4bcuATIWRUOPRDj/AIDUn7P1/J8M/j3q3hS5kKw3Mk1nhnPzMp3xNgjqwzj/AH6x/hT8CvH2v+F49c8O67DoNpfE5T7VNC77cqCdq+ob86wviH4K8VfBvxhous63fx6pfTTLdR3MczyFjEwwGLYJOCvftX0fLTqSnQ5tGrJeZ+N0Z4vC0KGYTw8k/aOcp6e8pHt/7bJ2+DPD5BI/4mOOv/TJjWZMo/4Ymjfv5X/t5Un7Xmrw698L/COpWzboLq6W4Q/7JgY/yqOU/wDGEif9c/8A28rkpuUcPSh/fPocZJVc2x7i9HQuvuRF+yd4+8N+GPAWqW2r65Y6bK+oGVY551DFPKjHT0yK8/8AHOrWHxH/AGhdKm8I/wCkI1xAq3ESABnVvmlzjOMeo7Vb+C3wI034rfDnW9RaaWDXYrhre2laQmMEIjAMPTPuOK0/2X/Etl4J8eaj4Y17TorTWp5PKivZkAkikUYaIt6N2xXTU9nGdWrBty7HlYaWKxOGwGExUVCjup9Xb7Pk2bv7cAKzeEcEjK3JODjp5f8AjWj4I/al8FeG/CGjaXdWOpyXdraRwSstqhBZIwCcl/as79uE5k8InqALoE+hPlYrrPAXh34RS+CdBOpReF2v2sYfPW6khLhzGN2QTnOc1ze68JT50/ketL6y8/xP1SpCNuW7n6LY6l/Fln8bfhH4kk8MW9zBLPDPZxpNEscnmBB6MRj5h3r5m+AvxT074Pa5qkOvaRcSSXBVTIkS+fCUHI2Hsfavr7wpqHgbRdHu7fw1e6RHYW6m4nh02aNlQAYLFUJxwBWB4g0v4UfEOE3Opz6Bfsw5uBcxo/13Ag1yUq8YRnT5XyP7z3Mxy6pipUMXSrwVan6cjNrwN8UvCXxJ/wCQLfRTXKDcbeRQsqjnnafY9q7oY6Z96+BNFs7Pw1+0Zp1r4Nu3u9NTVIYopkbO9Ds81cj7yrlufavvkAMfQ4rnxdBUJRs9z1uH80q5jTqqtBKdOXK7bPzRJx70UbaK4T626HUUUUgCiiigBhiBOe9NaAPnJNS0UbBurDPLHbijylBzin0U7isN2AevXNJ5Yp9FIYzygQc80hhBJOeakooBaEYiABHUHtTggFOop3CwVDPgQvksBt529RU1RT48mTLlMryw6ihCezPmeP4l+G4RD5XjLxRoN1JMYvJ1cCeKPBwXk8xCAv0YVZuLiHQruW/i1CwsZdkch8Q+GyDblW4Q3lqGOUbn5hke4p+gaTZa5YvL4c+J0lzDZ+bFJZa+sVwhGcEuh2Ntz0Ldq4XX/CkngbXbWbxFoFvHaCPYTo0oSy1a5aRTCkiYVIVUEn5gOFPzcivciqc3Zs/L6lWvRXtZRXqtvwv/AJnpep6n4j17xDod3qHhhbzSrJvtZufD1zFPFfzqpWIku6FUXJI3Z5xzUF/c3Uck1zpfh19PtIpQ1zYw3cV7GCrBlaS0RsphgDmM7hjkNXeaN8HtBvNNtZtZ0ax/tR4lNytjuhg3egVTjFaOp/CPwzcW8AsNNi0O6tzm3vNJRbeaE+zKOR/stlT3Bri9vTg7H0P9nYqonUbTb+/7/wDM8vsPF+naD4dv/EJutNF3Z27Wul263qzESzNl55C20gySFM7gCAh9a46O38IWviW0kgu4jPBe6ZbR3hZ4xdES+bczM3Cvuc5JP9yvYLn4R6zeXKtc6vo0rggC+bQI2vPUtuZimSTzhMewroNO+Gy2srG613VNWtpFKzWWoeTJDID6KIxj8PWr9tTjqmczy7F4i0ZxSS/r9UeVa98OG0T4kpq9vY3V3HdX0N5a3kMm2K2JlRp0kQDByDK+9iBjA613n/CL3eqeIrzSrGS68N+HbWNbh30yMRPeXEzOz4kwSFAAJ24OWHNbK/BPwWspb+wbYr2hOfKXr91M7R1PQV19tp1tY28cEMSxwxrsRFAwB0x/L8qwnWco2R62GyxU5N1FZeRwt38K7yGMx6Z4y1+zjkBSZLicXYZMY+XzVYqR7Guy8P8Ahyx8M6Ra6bp8ZhtbdNqKWLHuSSTySSSST61pBPcn8aUjNcznKSs2e3Tw9Ki+aCs9gK5oK5B9+KWkNQb2PnvxR+x9oXiDXr/Vhrup2015cPcugCEBmJJAwAccnvUekfsYeFbedZNR1TU9TVQAYmKIjAdjgZ/I19DBfXmhlz2rt+u4iyjzvQ+cfDuVubk6C11e+5l6L4Y07w/o9vpenWy2thbpsjgQfKB3/nXi/i39jzwl4h1Ga8sLm80OSV/MaGAI0W71CkHH4Gvfugpm0dMcfSsqderSblCWrPQxWWYTGwjCvTUlHbyPCfB37IfhHwzqUN9eTXetSxMHWK4CLFuHcqAM/icV6b8RPAFl8RPCV14fvZpra0uDGWe3A3LscMMZBHUAdOldVtz9KCO3T6USr1ZyUpS1WxNHKcFh6M8PSppRmrNd0fOX/DEvhknP9vaxkYxgxDj04Stjwd+yX4e8FeJtP1u11bU7i4spPMWOXy9rH0OFBx+Ne649qNvtWksZiJLllN2OClw3lNGcalOhFNbHk13+zxo978UV8dPqV+L8Tx3H2VVTy9yKFA6Zxgeteo32l22pWc1rdRLPbzI0ckbjIZT1BqzsHoPpinVhOrOpy8zvbY9ihgsNhudUYJc7u/Nnifgb9lvQPAPjO08Q6fqWoSSWrO0VrKE8sFkKHoAehPevQfHXwz0H4i6T/Z+t2n2mJSWjcHDxsf4lPY/pXUlAfp6U6qlXqzn7SUtTGllmDo0pUKdJKEndro2fNM37FGgSXBaPX9Tjt87thRC+frjB/EV6x8Nvgv4b+Ftu40i1Y3UgxJeXBDyuOOCQAAOOgAru8H6U4D1NVPE1qitKRy4XI8vwVT2tGklLueN/FH9mrQ/id4gOtXOo39hfGNIv3GxkIXpwQTn8a5rw/wDsZeFtOu1m1DU9R1ONWBMHyxIwBBwSOccdiK+hwnbtSlenFVHFVoR5YyM6uQZbXqutUoptu/z7lPTtHtdIs4bSziW3toVCRxIMKqjsK4T4ufBWw+L402PUdSvbOGyZ2EdqVwxYYycqeg6fU16RRjIwSawjUnCXNF6nrV8JQxNL2FWKcO3Qx/Cvhu18JeHNO0ezBFtYwrCvTJAHU4AGT1PHc1zHxa+D2lfF3SLSw1K4ntjazedFNbgFgcEEZIIxz+grvyPw+lGM9zRGpKMudPXcKuEoVqH1apBOFrW6WR4/r/7OWl+I/AWh+FLvV9RNppMjPDcDZ5jZzw2VxgBiBgdK12+C2nN8JB4AN7df2cF2/avl83/W+Z1xjr7dPzr0fbj6+tLzWjxFVpLm2d/mcaynBxcpKmryXK/OPb0OD+FHwlsPhNoVxpen3tzdRTTm4d7nbncVC8YA4+UVz/xI/Zv0D4ieIotckvLzSdRVQskliVG8joxyp5HrXrgIHrRke9Cr1VN1FLVlTyvBzoxw8qacI7Lt6HlPxG+Adh8ULPRYNX1fUFl0qNo1uIQgabO3JbIIz8o6AdTXDt+xH4XbP/E91fnj/lln89ma+jdvtxRj2rSGLr04qMZaI48RkGW4qo6tainJ7vU8e8C/s06F4ETWI4NQ1C8TVLV7Of7QycI3Urhev1zXHXf7Evh9p91vr2pQRf3GijY/mFA/SvpMAj1pACOnA9KFi66k5qWo55BltSnGlOinGOyPL/hj+zx4V+GF39vsUmvdTAKi8u8FkB+8FAUAZ78V6jsHPvS4pa5pzlVd5u56uGwlDB0/ZYeCjHsgoooqDqsFFFFAwooooAKKKKACiiigAooooAKKKKACiiigAqGcFoZAM7ivQHn86mqC5P8Ao0ny7gFPyDqcU0J7M+V7zRLO91DUG8QCXUEgQSz2OvW/2bUoEA2obaaIBJgzkDA/iIFWNX+zXF5d6ZqWmJq+qXcbHVIbO7ktdSVmUZWEPtFxGibFADHJQ1Si1yVLuyvLOCSHT7B4bu40Se9a6t4ZWOIgxIE0bqQG2IkgztOOudfTXs727t49Purqa8uGUafpGsMb0QXAbC3FrOckJH8xdQSQFIYAkCvd6cx+WWi5OEVZvZf8D9P8z1T4OG6tNGvtIlu5NQstLufsVpfzDEkqqgLIw9UOVJ747V6MVy3X8KyvDnh+28NaLaadbhvLgQKCzZZu5Zj3JJJJ9TWtnk14tSXNNtH6NhaTo0IQluN8lc9B+VKIwMcmn0VmtDtshNvFIFxTqKBhRRRQAUUUUAJRS0UCsIeaQrmnUUDExxRilooATFGKWigVgooooGFFFFACYpaKKBWsJRS0UBYKKKKBhRRRQAmKMUtFArCbaNtLRQMTFGKWigVhMUYpaKAsFFFFAwooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACoZlLxSBSQ2CAfTNTUmKBM8NtPEWlax9p0jxtZhdQsSPL1Dy9k0HOVJkjAMR4G2QYVgODniqPgO1OheObS30q8sdVs75ikd3amMtHFFGS4miGP3pyiGXJPKjauTXseveDND8R+WdU0q0v2jJMbXECyFCeu3I49eO/PWqnhnwFpHhie5uLKFllmATe+C0ca/djU4zsU5IBz19hjr9quWx85/Z1VVoSdrL7XU6by885IJpduM06iuQ+k3CiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACkPSiigBuML1NKF4oooJ+0x1FFFBQUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFAH/2Q==";
+    const DOSSIER_LOGO_POLICIA = "data:image/jpeg;base64,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";
     const TITULO_LABOR = "LABOR PERICIAL Y EVIDENCIAS";
 
     window.addEventListener('load', () => {
@@ -338,10 +361,11 @@
         const fechaLocal = new Date().toLocaleDateString('zh-Hans-CN', opciones).replace(/\//g, '-');
         document.getElementById('acta1-fecha').value = fechaLocal;
         agregarSubBloqueDatosPU(1);
+        agregarSubBloqueDossier(1);
     }
 
     // "Datos para P.U." se despliega TODO junto, debajo del botón "Cargar datos para P.U"
-    // (no adentro de cada acta): un sub-bloque de Especialidades por cada acta existente.
+    // (no adentro de cada acta): un sub-bloque por cada acta existente.
     function agregarSubBloqueDatosPU(actaId) {
         const contenedor = document.getElementById('contenedorDatosPU');
         if (!contenedor) return;
@@ -349,10 +373,149 @@
         div.className = 'bloque-datos-pu-acta';
         div.setAttribute('data-acta-id', actaId);
         div.innerHTML = `
-            <div class="subtitulo-dossier" style="color:#6f42c1; margin-top:0;">📄 Acta ${actaId}</div>
+            <div class="subtitulo-dossier" style="color:#6f42c1; margin-top:0;">📄 Acta ${actaId}<span class="pu-acta-lef"></span></div>
+            <label>Hora de Inicio del Acta</label>
+            <input type="text" class="pu-hora-inicio" placeholder="Ej: 08:15">
             <div class="listaEspecialidades"></div>
-            <button type="button" class="btn-add-row" style="background:#6f42c1;" onclick="agregarEspecialidad(${actaId})">➕ AGREGAR ESPECIALIDAD</button>`;
+            <div style="margin-top:10px;">
+                <label>🔗 Cadena de custodia — a Instrucción (opcional) — solo los códigos, separados por coma</label>
+                <textarea class="custodia-texto" rows="1" placeholder="Ej: B4, B5, B6, B7"></textarea>
+            </div>
+            <div style="margin-top:10px;">
+                <label>🧬 Evidencias remitidas a A.F.I.S. (opcional) — solo los códigos, separados por coma</label>
+                <textarea class="custodia-afis-texto" rows="1" placeholder="Ej: D7, D8, D10, D11"></textarea>
+            </div>`;
         contenedor.appendChild(div);
+        const lista = div.querySelector('.listaEspecialidades');
+        ESPECIALIDADES_FIJAS.forEach(nombre => lista.appendChild(filaEspecialidadFija(actaId, nombre)));
+        lista.appendChild(filaEspecialidadOtros(actaId));
+        refrescarSubtituloDatosPU(actaId);
+    }
+
+    // Lee el LEF de esta acta (fija para la 1, dinámica para el resto) y lo muestra al lado
+    // de "📄 Acta N" en Datos para P.U., para saber de un vistazo a qué acta corresponde.
+    function refrescarSubtituloDatosPU(actaId) {
+        const lefInput = String(actaId) === '1' ? document.getElementById('acta1-lef') : document.querySelector(`#acta-bloque-${actaId} .acta-lef`);
+        const lef = lefInput ? lefInput.value.trim() : '';
+        const span = document.querySelector(`#contenedorDatosPU [data-acta-id="${actaId}"] .pu-acta-lef`);
+        if (span) span.textContent = lef ? ` — ${lef}` : '';
+    }
+    function refrescarSubtitulosDatosPU() {
+        document.querySelectorAll('#contenedorDatosPU .bloque-datos-pu-acta').forEach(bloque => {
+            refrescarSubtituloDatosPU(bloque.getAttribute('data-acta-id'));
+        });
+    }
+
+    // "Datos para Dossier" sigue el mismo patrón: un sub-bloque por acta, debajo del botón
+    // "Cargar datos para Dossier". A diferencia de "Datos para P.U.", acá arriba de los
+    // sub-bloques por acta hay dos campos que van UNA sola vez para todo el reporte
+    // (I.P.P., ya que Instructora se toma directo de Seccional Actuante), fijo en el HTML
+    // dentro de #bloqueDatosDossier.
+    function agregarSubBloqueDossier(actaId) {
+        const contenedor = document.getElementById('contenedorDatosDossier');
+        if (!contenedor) return;
+        const div = document.createElement('div');
+        div.className = 'bloque-datos-dossier-acta';
+        div.setAttribute('data-acta-id', actaId);
+        div.innerHTML = `
+            <div class="subtitulo-dossier" style="color:#1b7a43; margin-top:0;">📄 Acta ${actaId}<span class="dossier-acta-lef"></span></div>
+            <label>Resultado</label>
+            <select class="dossier-resultado">
+                <option value="">--- Resultado ---</option>
+                <option value="POSITIVO">Positivo</option>
+                <option value="NEGATIVO">Negativo</option>
+            </select>
+            <label>Peritos intervinientes</label>
+            <div class="listaPeritos"></div>`;
+        contenedor.appendChild(div);
+        refrescarSubtituloDossier(actaId);
+        refrescarPeritosDossier(actaId);
+    }
+
+    // "Peritos Intervinientes" no se escribe libre: aparece un renglón por cada especialidad
+    // tildada en Datos para P.U. de esa misma acta (Fotografía, Rastros...), con un campo en
+    // blanco al lado para que el usuario cargue el nombre de quién la hizo. Al re-generar la
+    // lista (porque se tildó/destildó algo en P.U.) se conservan los nombres ya cargados para
+    // las especialidades que sigan marcadas.
+    function refrescarPeritosDossier(actaId) {
+        const sub = document.querySelector(`#contenedorDatosDossier [data-acta-id="${actaId}"]`);
+        if (!sub) return;
+        const contenedor = sub.querySelector('.listaPeritos');
+        if (!contenedor) return;
+        const nombresPrevios = {};
+        contenedor.querySelectorAll('.perito-fila').forEach(fila => {
+            nombresPrevios[fila.getAttribute('data-especialidad')] = fila.querySelector('.perito-nombre').value;
+        });
+        const marcadas = leerEspecialidadesMarcadas(actaId);
+        contenedor.innerHTML = marcadas.length ? '' : '<div class="perito-vacio">Marcá especialidades en "Datos para P.U." para que aparezcan acá.</div>';
+        marcadas.forEach(nombre => {
+            const div = document.createElement('div');
+            div.className = 'perito-fila';
+            div.setAttribute('data-especialidad', nombre);
+            const valorPrevio = (nombresPrevios[nombre] || '').replace(/"/g, '&quot;');
+            div.innerHTML = `
+                <label class="perito-label">${nombre}</label>
+                <input type="text" class="perito-nombre" placeholder="Ej: Subcomisario BETANZOS, Federico Adrian" value="${valorPrevio}">`;
+            contenedor.appendChild(div);
+        });
+    }
+    function refrescarPeritosDossierTodas() {
+        document.querySelectorAll('#contenedorDatosDossier .bloque-datos-dossier-acta').forEach(bloque => {
+            refrescarPeritosDossier(bloque.getAttribute('data-acta-id'));
+        });
+    }
+
+    // Mismo criterio que refrescarSubtituloDatosPU(): mostrar el LEF de la acta al lado de
+    // "📄 Acta N" para saber a qué acta corresponde de un vistazo.
+    function refrescarSubtituloDossier(actaId) {
+        const lefInput = String(actaId) === '1' ? document.getElementById('acta1-lef') : document.querySelector(`#acta-bloque-${actaId} .acta-lef`);
+        const lef = lefInput ? lefInput.value.trim() : '';
+        const span = document.querySelector(`#contenedorDatosDossier [data-acta-id="${actaId}"] .dossier-acta-lef`);
+        if (span) span.textContent = lef ? ` — ${lef}` : '';
+    }
+    function refrescarSubtitulosDossier() {
+        document.querySelectorAll('#contenedorDatosDossier .bloque-datos-dossier-acta').forEach(bloque => {
+            refrescarSubtituloDossier(bloque.getAttribute('data-acta-id'));
+        });
+    }
+
+    function datosDossierDeActa(actaId) {
+        const sub = document.querySelector(`#contenedorDatosDossier [data-acta-id="${actaId}"]`);
+        if (!sub) return { resultado: "", peritos: [] };
+        const peritos = Array.from(sub.querySelectorAll('.perito-fila')).map(fila => ({
+            especialidad: fila.getAttribute('data-especialidad'),
+            nombre: fila.querySelector('.perito-nombre').value.trim()
+        })).filter(p => p.nombre);
+        return {
+            resultado: sub.querySelector('.dossier-resultado').value,
+            peritos
+        };
+    }
+
+    // Los renglones de Peritos ya se generan solos a partir de las especialidades marcadas
+    // (refrescarPeritosDossier); acá solo hace falta volcar los nombres guardados en cada uno.
+    function cargarDatosDossierEnActa(actaId, dossier) {
+        if (!dossier) return;
+        const sub = document.querySelector(`#contenedorDatosDossier [data-acta-id="${actaId}"]`);
+        if (!sub) return;
+        if (dossier.resultado) sub.querySelector('.dossier-resultado').value = dossier.resultado;
+        (dossier.peritos || []).forEach(p => {
+            const fila = sub.querySelector(`.perito-fila[data-especialidad="${CSS.escape(p.especialidad)}"]`);
+            if (fila) fila.querySelector('.perito-nombre').value = p.nombre;
+        });
+    }
+
+    function toggleDatosDossier() {
+        mostrarDatosDossier = !mostrarDatosDossier;
+        actualizarVisibilidadDatosDossier();
+    }
+
+    function actualizarVisibilidadDatosDossier() {
+        const bloque = document.getElementById('bloqueDatosDossier');
+        if (bloque) bloque.style.display = mostrarDatosDossier ? 'block' : 'none';
+        const btn = document.getElementById('btnCargarDatosDossier');
+        if (btn) btn.innerText = mostrarDatosDossier ? '➖ Ocultar datos para Dossier' : '➕ Cargar datos para Dossier';
+        if (mostrarDatosDossier) { refrescarSubtitulosDossier(); refrescarPeritosDossierTodas(); }
     }
 
     // Crea una acta adicional (la 1ª ya está fija en el formulario). Se agrega al final,
@@ -374,7 +537,7 @@
             <div class="row">
                 <div style="flex:1">
                     <label>🔢 LEF/A.R.A</label>
-                    <input type="text" class="acta-lef" value="${datos && datos.lef && datos.lef !== '---' ? datos.lef : '4436-00000-2026'}">
+                    <input type="text" class="acta-lef" value="${datos && datos.lef && datos.lef !== '---' ? datos.lef : '4436-00000-2026'}" oninput="refrescarSubtituloDatosPU(${id}); refrescarSubtituloDossier(${id})">
                 </div>
                 <div style="flex:1">
                     <label>📅 FECHA</label>
@@ -421,11 +584,26 @@
         container.insertAdjacentHTML('beforeend', html);
         renumerarTitulosActas();
         agregarSubBloqueDatosPU(id);
+        agregarSubBloqueDossier(id);
 
         if (datos) {
             (datos.lefs_extra || []).forEach(v => agregarLefExtra(id, v));
             (datos.areas || []).forEach(a => agregarAreaLabor(id, a.area, a.evidencias || []));
             (datos.especialidades || []).forEach(e => agregarEspecialidad(id, e.especialidad, e.resultado));
+            if (datos.custodia) {
+                const campoCustodia = document.querySelector(`#contenedorDatosPU [data-acta-id="${id}"] .custodia-texto`);
+                if (campoCustodia) campoCustodia.value = datos.custodia;
+            }
+            if (datos.custodiaAfis) {
+                const campoCustodiaAfis = document.querySelector(`#contenedorDatosPU [data-acta-id="${id}"] .custodia-afis-texto`);
+                if (campoCustodiaAfis) campoCustodiaAfis.value = datos.custodiaAfis;
+            }
+            if (datos.horaInicio) {
+                const campoHoraInicio = document.querySelector(`#contenedorDatosPU [data-acta-id="${id}"] .pu-hora-inicio`);
+                if (campoHoraInicio) campoHoraInicio.value = datos.horaInicio;
+            }
+            refrescarPeritosDossier(id);
+            cargarDatosDossierEnActa(id, datos.dossier);
             if (datos.accidentologia) {
                 const bloqueNuevo = document.getElementById(`acta-bloque-${id}`);
                 if (bloqueNuevo) cargarAccidentologiaEnBloque(bloqueNuevo, datos.accidentologia);
@@ -444,7 +622,10 @@
         if (el) el.remove();
         const subBloquePU = document.querySelector(`#contenedorDatosPU [data-acta-id="${id}"]`);
         if (subBloquePU) subBloquePU.remove();
+        const subBloqueDossier = document.querySelector(`#contenedorDatosDossier [data-acta-id="${id}"]`);
+        if (subBloqueDossier) subBloqueDossier.remove();
         renumerarTitulosActas();
+        refrescarLetrasAreas();
     }
 
     function renumerarTitulosActas() {
@@ -457,11 +638,12 @@
     }
 
     function actualizarVisibilidadLabor() {
+        // "Agregar otra acta" NO se toca acá: está siempre visible desde la primera carga
+        // (puede haber más de un LEF/A.R.A desde el inicio). Solo la Labor Pericial de cada
+        // acta (áreas/evidencias) sigue oculta hasta el modo edición.
         document.querySelectorAll('.seccion-labor-acta').forEach(el => {
             el.style.display = modoEdicionActivo ? 'block' : 'none';
         });
-        const btnAdd = document.getElementById('btnAddActa');
-        if (btnAdd) btnAdd.style.display = modoEdicionActivo ? 'block' : 'none';
     }
 
     // ============ ACCIDENTOLOGÍA (solo cuando está tildado 🟡 L. Culposas) ============
@@ -530,50 +712,142 @@
         if (contenedor) contenedor.style.display = mostrarDatosPU ? 'block' : 'none';
         const btn = document.getElementById('btnCargarDatosPU');
         if (btn) btn.innerText = mostrarDatosPU ? '➖ Ocultar datos para P.U' : '➕ Cargar datos para P.U';
+        if (mostrarDatosPU) refrescarSubtitulosDatosPU();
     }
 
-    function aplicarResultadoRapido(selectEl) {
-        if (!selectEl.value) return;
-        const resultado = selectEl.closest('.especialidad-block').querySelector('.especialidad-resultado');
-        resultado.value = selectEl.value;
-        selectEl.value = "";
-    }
+    // Lista fija de especialidades (checkbox + Positivo/Negativo cada una). "Otros" se agrega
+    // aparte porque es la única con texto libre (nombre + resultado escritos a mano).
+    const ESPECIALIDADES_FIJAS = ['Coordinación', 'Fotografía', 'Rastros', 'Planimetría', 'Balística', 'Química', 'Accidentología', 'Mecánica', 'Dibujo de Rostro', 'Morgue', 'A.F.I.S.'];
 
-    function filaEspecialidad(especialidad = "", resultado = "") {
+    // Especialidades cuyo "Positivo" no se lee como "Positivo." sino con una frase fija propia.
+    const TEXTO_FIJO_ESPECIALIDAD_POSITIVO = {
+        'Planimetría': 'Se llevó a cabo croquis con toma de medidas, para confección de posterior plano a escala.'
+    };
+
+    function filaEspecialidadFija(actaId, nombre) {
+        const slug = nombre.normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^A-Za-z0-9]/g, '');
         const div = document.createElement('div');
-        div.className = 'especialidad-block';
+        div.className = 'especialidad-fija';
+        div.setAttribute('data-nombre', nombre);
         div.innerHTML = `
-            <div class="dyn-row">
-                <input type="text" class="especialidad-nombre col-grande" placeholder="Especialidad (Ej: FOTOGRAFÍA)" value="${especialidad.replace(/"/g,'&quot;')}">
-                <button type="button" class="btn-remove-row" onclick="this.closest('.especialidad-block').remove()">✖</button>
-            </div>
-            <select class="especialidad-rapido" onchange="aplicarResultadoRapido(this)">
-                <option value="">--- Resultado rápido (o escribir abajo) ---</option>
-                <option value="Positivo.">Positivo</option>
-                <option value="Negativo.">Negativo</option>
-            </select>
-            <textarea class="especialidad-resultado" rows="1" placeholder="Resultado (Ej: Positivo. / Se llevó a cabo toma de apuntes para confección de plano a escala.)">${resultado}</textarea>`;
+            <label class="esp-check-label"><input type="checkbox" class="esp-check" onchange="refrescarPeritosDossier(${actaId})"> ${nombre}</label>
+            <span class="esp-pn">
+                <label><input type="radio" name="esp-pn-${actaId}-${slug}" value="Positivo" class="esp-radio-positivo"> Positivo</label>
+                <label><input type="radio" name="esp-pn-${actaId}-${slug}" value="Negativo" class="esp-radio-negativo"> Negativo</label>
+            </span>`;
+        return div;
+    }
+    function filaEspecialidadOtros(actaId) {
+        const div = document.createElement('div');
+        div.className = 'especialidad-fija especialidad-otros';
+        div.setAttribute('data-nombre', 'Otros');
+        div.innerHTML = `
+            <label class="esp-check-label"><input type="checkbox" class="esp-check" onchange="this.closest('.especialidad-otros').querySelector('.especialidad-otros-campos').style.display = this.checked ? 'flex' : 'none'; refrescarPeritosDossier(${actaId});"> Otros</label>
+            <div class="especialidad-otros-campos" style="display:none;">
+                <input type="text" class="esp-otros-nombre" placeholder="Nombre de la especialidad" oninput="refrescarPeritosDossier(${actaId})">
+                <textarea class="esp-otros-resultado" rows="1" placeholder="Resultado"></textarea>
+            </div>`;
         return div;
     }
     function contenedorEspecialidades(actaId) {
         const subBloque = document.querySelector(`#contenedorDatosPU [data-acta-id="${actaId}"]`);
         return subBloque ? subBloque.querySelector('.listaEspecialidades') : null;
     }
+    // Compatibilidad con reportes guardados (editar()): si el nombre coincide (sin tildes/mayúsculas)
+    // con una especialidad fija, marca su checkbox y el Positivo/Negativo correspondiente; si no
+    // coincide con ninguna, se acumula en el renglón libre "Otros" (concatenando si ya había algo).
     function agregarEspecialidad(actaId, especialidad = "", resultado = "") {
+        if (!especialidad && !resultado) return;
         const lista = contenedorEspecialidades(actaId);
-        if (lista) lista.appendChild(filaEspecialidad(especialidad, resultado));
+        if (!lista) return;
+        const nombreNorm = quitarAcentos(especialidad).trim().toLowerCase();
+        const filaFija = Array.from(lista.querySelectorAll('.especialidad-fija:not(.especialidad-otros)'))
+            .find(f => quitarAcentos(f.getAttribute('data-nombre')).toLowerCase() === nombreNorm);
+        if (filaFija) {
+            filaFija.querySelector('.esp-check').checked = true;
+            const resNorm = quitarAcentos(resultado).trim().toLowerCase();
+            if (resNorm.startsWith('positivo')) filaFija.querySelector('.esp-radio-positivo').checked = true;
+            else if (resNorm.startsWith('negativo')) filaFija.querySelector('.esp-radio-negativo').checked = true;
+            return;
+        }
+        const filaOtros = lista.querySelector('.especialidad-otros');
+        if (!filaOtros) return;
+        filaOtros.querySelector('.esp-check').checked = true;
+        filaOtros.querySelector('.especialidad-otros-campos').style.display = 'flex';
+        const campoNombre = filaOtros.querySelector('.esp-otros-nombre');
+        const campoResultado = filaOtros.querySelector('.esp-otros-resultado');
+        campoNombre.value = campoNombre.value ? `${campoNombre.value}; ${especialidad}` : especialidad;
+        campoResultado.value = campoResultado.value ? `${campoResultado.value}; ${resultado}` : resultado;
     }
     function leerEspecialidades(actaId) {
         const lista = contenedorEspecialidades(actaId);
         if (!lista) return [];
-        return Array.from(lista.querySelectorAll('.especialidad-block')).map(block => ({
-            especialidad: block.querySelector('.especialidad-nombre').value.trim(),
-            resultado: block.querySelector('.especialidad-resultado').value.trim()
-        })).filter(e => e.especialidad || e.resultado);
+        const resultado = [];
+        lista.querySelectorAll('.especialidad-fija').forEach(fila => {
+            if (!fila.querySelector('.esp-check').checked) return;
+            if (fila.classList.contains('especialidad-otros')) {
+                const nombreOtros = fila.querySelector('.esp-otros-nombre').value.trim();
+                const resultadoOtros = fila.querySelector('.esp-otros-resultado').value.trim();
+                if (nombreOtros || resultadoOtros) resultado.push({ especialidad: nombreOtros, resultado: resultadoOtros });
+            } else {
+                const nombre = fila.getAttribute('data-nombre');
+                // Se guarda aunque todavía no se haya elegido Positivo/Negativo (resultado ""),
+                // para que el tilde en sí sobreviva un guardado/reedición — formatearEspecialidadesHTML
+                // se encarga de no imprimir nada en el P.U. hasta que sí se elija.
+                const pn = fila.querySelector('.esp-radio-positivo').checked ? 'Positivo' : (fila.querySelector('.esp-radio-negativo').checked ? 'Negativo' : '');
+                resultado.push({ especialidad: nombre, resultado: pn });
+            }
+        });
+        return resultado;
     }
+    // Nombres de las especialidades tildadas en Datos para P.U. de esta acta (sin importar si
+    // ya se eligió Positivo/Negativo) — es lo que alimenta "Peritos Intervinientes" del Dossier.
+    function leerEspecialidadesMarcadas(actaId) {
+        const lista = contenedorEspecialidades(actaId);
+        if (!lista) return [];
+        const resultado = [];
+        lista.querySelectorAll('.especialidad-fija').forEach(fila => {
+            if (!fila.querySelector('.esp-check').checked) return;
+            if (fila.classList.contains('especialidad-otros')) {
+                const nombreOtros = fila.querySelector('.esp-otros-nombre').value.trim();
+                if (nombreOtros) resultado.push(nombreOtros);
+            } else {
+                resultado.push(fila.getAttribute('data-nombre'));
+            }
+        });
+        return resultado;
+    }
+    function leerCadenaCustodia(actaId) {
+        const subBloque = document.querySelector(`#contenedorDatosPU [data-acta-id="${actaId}"]`);
+        const campo = subBloque ? subBloque.querySelector('.custodia-texto') : null;
+        return campo ? campo.value.trim() : "";
+    }
+    function leerCadenaCustodiaAfis(actaId) {
+        const subBloque = document.querySelector(`#contenedorDatosPU [data-acta-id="${actaId}"]`);
+        const campo = subBloque ? subBloque.querySelector('.custodia-afis-texto') : null;
+        return campo ? campo.value.trim() : "";
+    }
+    function leerHoraInicioActa(actaId) {
+        const subBloque = document.querySelector(`#contenedorDatosPU [data-acta-id="${actaId}"]`);
+        const campo = subBloque ? subBloque.querySelector('.pu-hora-inicio') : null;
+        return campo ? campo.value.trim() : "";
+    }
+    // Las especialidades fijas (excepto "Otros") van en MAYÚSCULA y con Positivo./Negativo. fijo,
+    // salvo que tengan una frase propia (ej. Planimetría). "Otros" respeta el texto tal cual se
+    // escribió, sin mayúsculas forzadas ni punto final automático (es texto libre).
     function formatearEspecialidadesHTML(especialidades) {
         if (!especialidades || !especialidades.length) return "";
-        return especialidades.map(e => e.especialidad ? `<b>${e.especialidad}:</b> ${e.resultado || ""}` : "").filter(Boolean).join("<br>");
+        return especialidades.map(e => {
+            if (!e.especialidad) return "";
+            const esFija = ESPECIALIDADES_FIJAS.includes(e.especialidad);
+            if (esFija) {
+                if (!e.resultado) return ""; // tildada pero todavía sin Positivo/Negativo: no imprime nada
+                const fijo = TEXTO_FIJO_ESPECIALIDAD_POSITIVO[e.especialidad];
+                const texto = (fijo && e.resultado === 'Positivo') ? fijo : `${e.resultado}.`;
+                return `<b>${e.especialidad.toUpperCase()}:</b> ${texto}`;
+            }
+            return `<b>${e.especialidad}:</b> ${e.resultado || ""}`;
+        }).filter(Boolean).join("<br>");
     }
 
     function inputGpsDeActa(id) {
@@ -652,8 +926,9 @@
         div.className = 'area-block';
         div.innerHTML = `
             <div class="dyn-row">
+                <span class="area-letra-badge">?</span>
                 <input type="text" class="area-labor-nombre col-grande" placeholder="Área (Ej: galpón)" value="${nombre.replace(/"/g,'&quot;')}">
-                <button type="button" class="btn-remove-row" onclick="this.closest('.area-block').remove()">✖</button>
+                <button type="button" class="btn-remove-row" onclick="this.closest('.area-block').remove(); refrescarLetrasAreas();">✖</button>
             </div>
             <label class="lbl-evidencia-area">Evidencia:</label>
             <div class="lista-evidencias-labor"></div>
@@ -661,6 +936,24 @@
         const listaEv = div.querySelector('.lista-evidencias-labor');
         evidencias.forEach(e => listaEv.appendChild(filaEvidenciaLabor(e)));
         return div;
+    }
+    // Letra de referencia (A, B, C...) al lado de cada área, para que el perito ubique de
+    // un vistazo en qué letra va a salir cada una en el P.U./Dossier — es SOLO una ayuda
+    // visual del formulario: nunca se manda al extracto de WhatsApp ni al PDF.
+    function refrescarLetrasAreas() {
+        const contenedores = [
+            document.getElementById('acta1-listaAreasLabor'),
+            ...Array.from(document.querySelectorAll('#contenedor-actas-nuevas .bloque-acta .listaAreasLabor'))
+        ];
+        let i = 0;
+        contenedores.forEach(contenedor => {
+            if (!contenedor) return;
+            contenedor.querySelectorAll('.area-block').forEach(bloque => {
+                const badge = bloque.querySelector('.area-letra-badge');
+                if (badge) badge.textContent = letraDeArea(i);
+                i++;
+            });
+        });
     }
     function contenedorAreasLabor(actaId) {
         if (actaId === 1) return document.getElementById('acta1-listaAreasLabor');
@@ -670,6 +963,7 @@
     function agregarAreaLabor(actaId, nombre = "", evidencias = []) {
         const lista = contenedorAreasLabor(actaId);
         if (lista) lista.appendChild(filaAreaLabor(nombre, evidencias));
+        refrescarLetrasAreas();
     }
     function leerAreasLabor(bloque) {
         return Array.from(bloque.querySelectorAll('.listaAreasLabor .area-block')).map(block => ({
@@ -677,8 +971,10 @@
             evidencias: Array.from(block.querySelectorAll('.lista-evidencias-labor textarea')).map(t => t.value.trim()).filter(Boolean)
         })).filter(a => a.area || a.evidencias.length);
     }
+    // Un área sin evidencias no se manda por WhatsApp/PDF (solo aparece en el P.U./Dossier,
+    // donde igual cuenta su lugar en el orden para la letra que le corresponde).
     function formatearAreasTexto(areas) {
-        return areas.map(a => {
+        return areas.filter(a => a.evidencias && a.evidencias.length).map(a => {
             const lineas = [];
             if (a.area) lineas.push(`*${a.area}*`);
             a.evidencias.forEach(e => {
@@ -688,7 +984,7 @@
         }).filter(Boolean).join("\n");
     }
     function formatearAreasHTML(areas) {
-        return areas.map(a => {
+        return areas.filter(a => a.evidencias && a.evidencias.length).map(a => {
             const lineas = [];
             if (a.area) lineas.push(`<b>${a.area}</b>`);
             a.evidencias.forEach(e => {
@@ -747,7 +1043,11 @@
                 area: block.querySelector('.area-labor-nombre').value.trim(),
                 evidencias: Array.from(block.querySelectorAll('.lista-evidencias-labor textarea')).map(t => t.value.trim()).filter(Boolean)
             })).filter(a => a.area || a.evidencias.length),
-            especialidades: leerEspecialidades(1)
+            especialidades: leerEspecialidades(1),
+            custodia: leerCadenaCustodia(1),
+            custodiaAfis: leerCadenaCustodiaAfis(1),
+            horaInicio: leerHoraInicioActa(1),
+            dossier: datosDossierDeActa(1)
         };
 
         const lista = [acta1];
@@ -765,6 +1065,10 @@
                 lefs_extra: leerLefsExtra(b),
                 areas: leerAreasLabor(b),
                 especialidades: leerEspecialidades(idActa),
+                custodia: leerCadenaCustodia(idActa),
+                custodiaAfis: leerCadenaCustodiaAfis(idActa),
+                horaInicio: leerHoraInicioActa(idActa),
+                dossier: datosDossierDeActa(idActa),
                 accidentologia: leerAccidentologiaDeBloque(b)
             });
         });
@@ -857,7 +1161,7 @@
     function generarPDF() {
         const d = construirEstructuraCampos();
         const tituloOriginal = document.title;
-        document.title = `Reporte_${nombreArchivoBase(d.actasRaw)}`;
+        document.title = `${nombreArchivoBase(d.actasRaw)}_extracto`;
         const htmlFinal = `
             <div class="campo-pdf"><b>C.C.R. CENTRO</b></div>
             <div class="campo-pdf"><b>D.D.P.C. LA PLATA - S.P.D BRANDSEN</b></div>
@@ -884,33 +1188,168 @@
         document.title = tituloOriginal;
     }
 
-    // Para el P.U. (Word), la labor pericial de cada acta suma también las "Especialidades"
-    // (Fotografía/Rastro-Química/etc.) — eso NO se manda por WhatsApp ni al PDF, solo acá.
-    function laborParaPU_HTML(acta) {
-        const partes = [
-            formatearEspecialidadesHTML(acta.especialidades),
-            formatearAccidentologiaHTML(acta.accidentologia),
-            formatearAreasHTML(acta.areas)
-        ].filter(Boolean);
-        return partes.join("<br>");
+    const TITULO_LABOR_PU = "LABOR DESARROLLADA";
+
+    // Alfabeto español tradicional (28 letras, con LL después de L y Ñ después de N; sin CH)
+    // para que la numeración de áreas nunca "salte" esas letras.
+    const ALFABETO_AREAS = ['A','B','C','D','E','F','G','H','I','J','K','L','LL','M','N','Ñ','O','P','Q','R','S','T','U','V','W','X','Y','Z'];
+
+    // A, B, C ... LL ... Ñ ... Z, AA, AB ... (letra de área, 0-based)
+    function letraDeArea(i) {
+        const base = ALFABETO_AREAS.length;
+        let n = i + 1, letra = '';
+        while (n > 0) {
+            const resto = (n - 1) % base;
+            letra = ALFABETO_AREAS[resto] + letra;
+            n = Math.floor((n - 1) / base);
+        }
+        return letra;
+    }
+
+    // El usuario carga solo los códigos de evidencia separados por coma (ej: "B4, B5, B6, B7")
+    // y acá se arma la frase fija con el mismo formato que sus P.U. reales: "Evidencias
+    // entregadas a la instrucción con cadena de custodia. B4, B5, B6 Y B7.-"
+    function formatearCadenaCustodia(texto) {
+        if (!texto) return "";
+        const codigos = texto.split(',').map(s => s.trim()).filter(Boolean);
+        if (!codigos.length) return "";
+        const lista = codigos.length === 1
+            ? codigos[0]
+            : codigos.slice(0, -1).join(', ') + ' Y ' + codigos[codigos.length - 1];
+        return `Evidencias entregadas a la instrucción con cadena de custodia. ${lista}.-`;
+    }
+    // Evidencias remitidas a A.F.I.S. (huellas/rastros a valorizar) — misma idea que la cadena
+    // de custodia a Instrucción, pero con su propia frase fija y sin la "Y" antes del último ítem.
+    function formatearCadenaCustodiaAfis(texto) {
+        if (!texto) return "";
+        const codigos = texto.split(',').map(s => s.trim()).filter(Boolean);
+        if (!codigos.length) return "";
+        return `Evidencias remitidas a sección AFIS, para su valorización: ${codigos.join(', ')}.`;
+    }
+
+    // Para el P.U. (Word) la labor pericial se arma distinto que en WhatsApp/PDF:
+    // - Título "LABOR DESARROLLADA" (no "LABOR PERICIAL Y EVIDENCIAS").
+    // - Suma las "Especialidades" (Fotografía/Rastro-Química/etc., exclusivas del P.U.).
+    // - Las áreas llevan letra automática (Área A, B, C...) que sigue corriendo de una acta
+    //   a la otra, con cada evidencia numerada con esa misma letra (B1, B2...).
+    // - La frase "De la inspección ocular..." aparece UNA sola vez, antes del primer bloque de áreas.
+    // - De la 2ª acta en adelante, un encabezado "AMPLIACIÓN:" repite el LEF/ARA, LUGAR DEL HECHO
+    //   y GPS de esa acta antes de sus áreas (suele ser un lugar distinto al de la 1ª acta).
+    function construirLaborDesarrolladaHTML(actas) {
+        let indiceArea = 0;
+        const bloques = [];
+
+        actas.forEach((acta, idxActa) => {
+            const lineas = [];
+
+            if (idxActa > 0) {
+                lineas.push('<b>AMPLIACIÓN:</b>');
+                lineas.push(`<b>LEF/ARA:</b> ${acta.lef}`);
+                lineas.push(`<b>LUGAR DEL HECHO:</b> ${acta.lugar}`);
+                lineas.push(`<b>GPS:</b> ${acta.gps}`);
+            }
+
+            const especialidadesTxt = formatearEspecialidadesHTML(acta.especialidades);
+            if (especialidadesTxt) lineas.push(especialidadesTxt);
+
+            const accTxt = formatearAccidentologiaHTML(acta.accidentologia);
+            if (accTxt) lineas.push(accTxt);
+
+            const areasValidas = (acta.areas || []).filter(a => a.area || (a.evidencias && a.evidencias.length));
+            if (areasValidas.length) {
+                // Va después de las especialidades/accidentología de ESTA acta, antes de sus
+                // áreas — se repite en cada acta/ampliación, no una sola vez para todo el P.U.
+                lineas.push('De la inspección ocular arrojo los siguientes resultados:');
+                areasValidas.forEach(a => {
+                    const letra = letraDeArea(indiceArea);
+                    indiceArea++;
+                    lineas.push(`<b>Área ${letra}:</b> ${a.area || ''}`);
+                    // Si el usuario escribió varias evidencias en un mismo cuadro separadas
+                    // con Enter, cada línea se numera como una evidencia individual (B1, B2...)
+                    // en lugar de quedar todas pegadas bajo un solo número.
+                    let numEvidencia = 0;
+                    (a.evidencias || []).forEach(ev => {
+                        String(ev).split(/\r?\n/).map(s => s.trim()).filter(Boolean).forEach(sub => {
+                            numEvidencia++;
+                            lineas.push(`<b>${letra}${numEvidencia}:</b> ${sub}`);
+                        });
+                    });
+                });
+            }
+
+            // Cadena de custodia: va al final de las áreas de esta acta (no siempre se
+            // secuestra/entrega todo, por eso es opcional y el usuario carga solo los códigos).
+            const custodiaTxt = formatearCadenaCustodia(acta.custodia);
+            if (custodiaTxt) lineas.push(custodiaTxt);
+            const custodiaAfisTxt = formatearCadenaCustodiaAfis(acta.custodiaAfis);
+            if (custodiaAfisTxt) lineas.push(custodiaAfisTxt);
+
+            if (lineas.length) bloques.push(lineas.join('<br>'));
+        });
+
+        return bloques.join('<br><br>');
+    }
+
+    // Nombre del archivo del P.U., a pedido de Federico: "DCO <dco> <lef> <carátula> – <víctima> <fecha>"
+    // (ej: "DCO 11571-26 4436-00223-26 Averiguación Causales de Muerte – Merlo, Jose 19-08-2026"),
+    // con el año de DCO y LEF acortado a 2 dígitos. Distinto del nombre del PDF/"extracto" y del Dossier.
+    function acortarAnioDCO(dco) {
+        if (!dco || dco === '---') return dco || '---';
+        const partes = dco.split('/');
+        if (partes.length === 2) {
+            const anio = /^\d{4}$/.test(partes[1]) ? partes[1].slice(-2) : partes[1];
+            return `${partes[0]}-${anio}`;
+        }
+        return dco.replace(/\//g, '-');
+    }
+    function acortarAnioLEF(lef) {
+        if (!lef || lef === '---') return lef || '---';
+        const partes = lef.split('-');
+        const ultimo = partes[partes.length - 1];
+        if (/^\d{4}$/.test(ultimo)) partes[partes.length - 1] = ultimo.slice(-2);
+        return partes.join('-');
+    }
+    // Como aFormatoTitulo(), pero deja en minúscula los conectores en medio del texto
+    // ("de", "la", "y"...), para que el nombre de archivo quede "Causales de Muerte"
+    // y no "Causales De Muerte".
+    function aFormatoTituloConConectores(texto) {
+        if (!texto) return "---";
+        const conectores = ['de', 'del', 'la', 'las', 'el', 'los', 'y', 'en', 'a', 'con', 'por', 'para', 'un', 'una', 'o'];
+        return texto.trim().toLowerCase().split(/\s+/).map((palabra, i) => {
+            if (i > 0 && conectores.includes(palabra)) return palabra;
+            return palabra.charAt(0).toUpperCase() + palabra.slice(1);
+        }).join(' ');
+    }
+    // Solo el apellido de la primera víctima (no el dato completo con edad/DNI/domicilio,
+    // ni el resto de víctimas si el campo lista varias con "1- ... 2- ..."), para que el
+    // nombre de archivo no quede kilométrico.
+    function apellidoVictimaParaArchivo() {
+        let raw = (document.getElementById('victima').value || '').trim();
+        if (!raw) return '---';
+        raw = raw.split(/\s+\d+[-:.]\s+/)[0]; // se queda con la 1ª víctima si hay varias listadas
+        raw = raw.replace(/^\d+[-:.]\s*/, '').trim(); // saca un "1- " que haya quedado al principio
+        if (!raw) return '---';
+        const antesDeComa = raw.split(',')[0].trim(); // formato "Apellido, Nombre..."
+        const primeraPalabra = antesDeComa.split(/\s+/)[0]; // formato "Apellido Nombre (edad)..."
+        return primeraPalabra || '---';
+    }
+    function nombreArchivoPU(d, acta1) {
+        const dcoCorto = acortarAnioDCO(d.dco);
+        const lefCorto = acortarAnioLEF(acta1.lef);
+        const caratula = aFormatoTituloConConectores(document.getElementById('caratula').value);
+        const apellido = apellidoVictimaParaArchivo();
+        const fecha = formatearFechaSalida(acta1.fechaRaw).replace(/\//g, '-');
+        const nombre = `DCO ${dcoCorto} ${lefCorto} ${caratula} – ${apellido} ${fecha}`;
+        return nombre.replace(/[\\/:*?"<>|]/g, '-');
     }
 
     function exportarWord() {
         const d = construirEstructuraCampos();
         const actas = d.actasRaw;
-        const esMultiple = actas.length > 1;
 
-        let laborPU_HTML;
-        if (esMultiple) {
-            laborPU_HTML = actas.map((a, index) => {
-                const t = laborParaPU_HTML(a);
-                return t ? `<b>${index + 1}</b><br>${t}` : "";
-            }).filter(Boolean).join("<br><br>");
-        } else {
-            laborPU_HTML = laborParaPU_HTML(actas[0]);
-        }
+        const laborPU_HTML = construirLaborDesarrolladaHTML(actas);
 
-        const nombreArchivo = `Reporte_${nombreArchivoBase(actas)}.doc`;
+        const nombreArchivo = `${nombreArchivoPU(d, actas[0])}.doc`;
 
         const contenidoHTML = `<!DOCTYPE html>
         <html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">
@@ -950,10 +1389,167 @@
             <p><b>GPS:</b> ${d.gpsHTML}</p>
             <p><b>SÍNTESIS DEL HECHO:</b> ${d.sinBR}</p>
             <br>
-            ${laborPU_HTML ? `<p><b>${d.tituloLabor}:</b><br>${laborPU_HTML}</p>` : ''}
+            ${laborPU_HTML ? `<p><b>${TITULO_LABOR_PU}:</b><br>${laborPU_HTML}</p>` : ''}
             <div class="firma-contenedor">
                 <div class="firma-bloque">${FIRMA_DOCUMENTO_HTML}</div>
             </div>
+        </body>
+        </html>`;
+
+        const blob = new Blob([contenidoHTML], { type: 'application/msword;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a'); a.href = url; a.download = nombreArchivo; document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
+    }
+
+    // ============ DOSSIER (Word) ============
+    // El Dossier es un documento distinto del P.U.: portada con datos generales del caso
+    // (I.P.P., etc. — Instructora se toma directo de Seccional Actuante) + un bloque narrativo
+    // "Diligencias periciales" por acta
+    // (Labor desarrollada + Peritos intervinientes + Resultado) + las mismas Áreas/evidencias
+    // que Labor Pericial, pero numeradas con guion ("C-1"), a diferencia del P.U. ("C1").
+    // No lleva la frase "De la inspección ocular..." del P.U.
+
+    function fechaLarga(fechaISO) {
+        if (!fechaISO) return "---";
+        const meses = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
+        const partes = fechaISO.split('-').map(Number);
+        const [y, m, dia] = partes;
+        if (!y || !m || !dia) return "---";
+        return `${dia} de ${meses[m - 1]} de ${y}`;
+    }
+
+    // Texto base fijo de "Labor Desarrollada", igual para todas las actas — solo cambian las
+    // dos horas (inicio y fin de la labor pericial en el lugar).
+    function construirLaborDesarrolladaDossier(horaInicio, horaFin) {
+        const hi = (horaInicio || '').trim() || '---';
+        const hf = (horaFin || '').trim() || '---';
+        return `Constituida comisión pericial en el lugar del hecho, siendo las ${hi} horas, en presencia del testigo hábil, se procede a dar inicio a labor pericial consistente en inspección ocular, a los fines de detección de indicios y/o evidencias de interés pericial, mediante fijación fotográfica y codificación alfanumérica, lográndose individualizar y registrar las evidencias que a continuación se detallan, realizando planimetría a mano alzada del lugar para posterior plano a escala. Dándose por finalizada la labor a las ${hf} horas.`;
+    }
+
+    function construirDiligenciasDossierHTML(actas) {
+        let indiceArea = 0;
+        const bloques = [];
+
+        actas.forEach((acta, idxActa) => {
+            const lineas = [];
+
+            if (idxActa === 0) {
+                lineas.push('<b>DILIGENCIAS PERICIALES:</b>');
+                lineas.push('');
+                lineas.push(`<b>FECHA:</b> ${acta.fecha}`);
+                lineas.push('');
+                lineas.push(`<b>ACTA PRIMARIA L.E.F.:</b> ${acta.lef}`);
+            } else {
+                lineas.push(`<b>FECHA:</b> ${acta.fecha}`);
+                lineas.push(`<b>AMPLIACION ACTA L.E.F.:</b> ${acta.lef}`);
+                lineas.push(`<b>REFERENTE ACTA PRIMARIA L.E.F.:</b> ${actas[0].lef}`);
+                lineas.push(`<b>UBICACIÓN GPS:</b> ${acta.gps}`);
+            }
+
+            const dossierActa = acta.dossier || {};
+
+            // "Labor desarrollada" ya no se escribe a mano: es un texto base fijo, igual para
+            // todas las actas, donde lo único que cambia son las dos horas (inicio/fin) — que
+            // ya se cargan en otro lado (Hora de Inicio del Acta, dentro de Datos para P.U., y
+            // Hora de Finalización, arriba en el form de esa acta).
+            lineas.push('');
+            lineas.push(`<b>LABOR DESARROLLADA:</b> ${construirLaborDesarrolladaDossier(acta.horaInicio, acta.h_fin)}`);
+
+            if (dossierActa.peritos && dossierActa.peritos.length) {
+                lineas.push('');
+                lineas.push('<b>Peritos Intervinientes:</b>');
+                dossierActa.peritos.forEach(p => lineas.push(`${p.especialidad}: ${p.nombre}`));
+            }
+
+            if (dossierActa.resultado) {
+                lineas.push('');
+                lineas.push(`<b>RESULTADO:</b> ${dossierActa.resultado}`);
+            }
+
+            const areasValidas = (acta.areas || []).filter(a => a.area || (a.evidencias && a.evidencias.length));
+            if (areasValidas.length) {
+                lineas.push('');
+                areasValidas.forEach(a => {
+                    const letra = letraDeArea(indiceArea);
+                    indiceArea++;
+                    lineas.push(`<b>ÁREA ${letra}:</b> ${a.area || ''}`);
+                    let numEvidencia = 0;
+                    (a.evidencias || []).forEach(ev => {
+                        String(ev).split(/\r?\n/).map(s => s.trim()).filter(Boolean).forEach(sub => {
+                            numEvidencia++;
+                            lineas.push(`<b>${letra}-${numEvidencia}:</b> ${sub}`);
+                        });
+                    });
+                });
+            }
+
+            const custodiaTxt = formatearCadenaCustodia(acta.custodia);
+            if (custodiaTxt) {
+                lineas.push('');
+                lineas.push(custodiaTxt);
+            }
+            const custodiaAfisTxt = formatearCadenaCustodiaAfis(acta.custodiaAfis);
+            if (custodiaAfisTxt) {
+                lineas.push('');
+                lineas.push(custodiaAfisTxt);
+            }
+
+            bloques.push(lineas.join('<br>'));
+        });
+
+        return bloques.join('<br><br>');
+    }
+
+    function exportarDossier() {
+        const d = construirEstructuraCampos();
+        const actas = d.actasRaw;
+        const acta1 = actas[0];
+        const ipp = (document.getElementById('dossier-ipp').value || "").trim() || "---";
+
+        const diligenciasHTML = construirDiligenciasDossierHTML(actas);
+        const nombreArchivo = `Dossier_${nombreArchivoBase(actas)}.doc`;
+
+        const contenidoHTML = `<!DOCTYPE html>
+        <html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">
+        <head>
+            <meta charset="utf-8">
+            <!--[if gte mso 9]>
+            <xml>
+                <w:WordDocument>
+                    <w:View>Print</w:View>
+                    <w:Zoom>100</w:Zoom>
+                </w:WordDocument>
+            </xml>
+            <![endif]-->
+            <style>
+                body { font-family: 'Arial', sans-serif; font-size: 12pt; line-height: 1.5; color: black; margin: 1in; }
+                p { margin: 0 0 8pt 0; text-align: justify; line-height: 1.5; }
+                .dossier-header-logos { width: 100%; border-collapse: collapse; margin-bottom: 12pt; }
+                .dossier-titulo { text-align: center; font-size: 20pt; font-weight: bold; letter-spacing: 4px; margin: 0 0 6pt 0; }
+                .dossier-caratula { text-align: center; font-size: 14pt; font-weight: bold; margin: 0 0 4pt 0; }
+                .dossier-victima { text-align: center; font-size: 12pt; margin: 0 0 18pt 0; }
+            </style>
+        </head>
+        <body>
+            <table class="dossier-header-logos" cellpadding="0" cellspacing="0"><tr>
+                <td align="left" valign="middle"><img src="${DOSSIER_LOGO_MINISTERIO}" width="223" height="63"></td>
+                <td align="right" valign="middle"><img src="${DOSSIER_LOGO_POLICIA}" width="74" height="71"></td>
+            </tr></table>
+            <p class="dossier-titulo">DOSSIER</p>
+            <p class="dossier-caratula">${(document.getElementById('caratula').value || '').toUpperCase() || '---'}</p>
+            <p class="dossier-victima">${(document.getElementById('victima').value || '').toUpperCase() || '---'}</p>
+            <p><b>FECHA DE INICIO:</b> ${fechaLarga(acta1.fechaRaw)}</p>
+            <p><b>DEPENDENCIA:</b> ${d.seccional}</p>
+            <p><b>INSTRUCTORA:</b> ${d.seccional}</p>
+            <p><b>FISCALÍA INTERVENCIÓN:</b> ${d.ufi}</p>
+            <p><b>I.P.P.:</b> ${ipp}</p>
+            <p><b>POLICÍA CIENTÍFICA:</b> Delegación Departamental Policía Científica La Plata – S.P.D. Brandsen.</p>
+            <p><b>D.C.O.:</b> ${d.dco}</p>
+            <p><b>DIRECCIÓN:</b> ${acta1.lugar}</p>
+            <p><b>GPS:</b> ${acta1.gps}</p>
+            <p><b>SÍNTESIS DE LOS HECHOS:</b> ${d.sinBR}</p>
+            <br>
+            <p>${diligenciasHTML}</p>
         </body>
         </html>`;
 
@@ -988,7 +1584,8 @@
             dep: document.getElementById('dep').value,
             ufi: d.ufi,
             sintesis: d.sin,
-            stickersArr: checks
+            stickersArr: checks,
+            dossierIpp: document.getElementById('dossier-ipp').value
         });
     }
 
@@ -1009,9 +1606,20 @@
         if(container) {
             container.innerHTML = s.map((item, i) => {
                 const primerLef = item.actas ? item.actas[0]?.lef : (item.lef || "S/LEF");
-                return `<div class="hist-item"><span>📂 <b>${primerLef}</b> - ${item.caratula || "S/C"} (${item.actas ? item.actas.length : 1} acta/s)</span><button class="btn-edit" onclick="editar(${i})">EDITAR / PERICIA</button></div>`;
+                return `<div class="hist-item"><span>📂 <b>${primerLef}</b> - ${item.caratula || "S/C"} (${item.actas ? item.actas.length : 1} acta/s)</span><div class="hist-item-botones"><button class="btn-edit" onclick="editar(${i})">EDITAR / PERICIA</button><button class="btn-borrar-hist" onclick="borrarDeHistorial(${i})">🗑️ BORRAR</button></div></div>`;
             }).join("");
         }
+    }
+
+    // Borra un solo reporte del historial (para no cargar tanto la memoria del navegador),
+    // sin tocar el formulario que se esté editando en ese momento.
+    function borrarDeHistorial(idx) {
+        if (!confirm('¿Borrar este reporte del historial? No se puede deshacer.')) return;
+        let s = JSON.parse(localStorage.getItem('hist_BRANDSEN_FINAL') || "[]");
+        if (!Array.isArray(s)) s = [];
+        s.splice(idx, 1);
+        localStorage.setItem('hist_BRANDSEN_FINAL', JSON.stringify(s));
+        dibujarHist();
     }
 
     function editar(idx) {
@@ -1033,6 +1641,9 @@
         document.getElementById('contenedor-actas-nuevas').innerHTML = "";
         document.getElementById('contenedorDatosPU').innerHTML = "";
         agregarSubBloqueDatosPU(1);
+        document.getElementById('contenedorDatosDossier').innerHTML = "";
+        agregarSubBloqueDossier(1);
+        document.getElementById('dossier-ipp').value = d.dossierIpp || "";
         contadorActas = 1;
 
         let listaActas;
@@ -1084,12 +1695,27 @@
         (primera.lefs_extra || []).forEach(v => agregarLefExtra(1, v));
         (primera.areas || []).forEach(a => agregarAreaLabor(1, a.area, a.evidencias || []));
         (primera.especialidades || []).forEach(e => agregarEspecialidad(1, e.especialidad, e.resultado));
+        if (primera.custodia) {
+            const campoCustodia1 = document.querySelector('#contenedorDatosPU [data-acta-id="1"] .custodia-texto');
+            if (campoCustodia1) campoCustodia1.value = primera.custodia;
+        }
+        if (primera.custodiaAfis) {
+            const campoCustodiaAfis1 = document.querySelector('#contenedorDatosPU [data-acta-id="1"] .custodia-afis-texto');
+            if (campoCustodiaAfis1) campoCustodiaAfis1.value = primera.custodiaAfis;
+        }
+        if (primera.horaInicio) {
+            const campoHoraInicio1 = document.querySelector('#contenedorDatosPU [data-acta-id="1"] .pu-hora-inicio');
+            if (campoHoraInicio1) campoHoraInicio1.value = primera.horaInicio;
+        }
+        refrescarPeritosDossier(1);
+        cargarDatosDossierEnActa(1, primera.dossier);
 
         // El resto de las actas van a las tarjetas dinámicas, debajo del botón.
         listaActas.slice(1).forEach(acta => agregarBloqueActa(acta));
 
-        // Si el reporte ya tenía "Datos para P.U." cargados, se muestran directamente.
+        // Si el reporte ya tenía "Datos para P.U." o "Datos para Dossier" cargados, se muestran directamente.
         mostrarDatosPU = listaActas.some(a => a.especialidades && a.especialidades.length > 0);
+        mostrarDatosDossier = !!d.dossierIpp || listaActas.some(a => a.dossier && (a.dossier.resultado || a.dossier.laborDesarrollada || a.dossier.peritos));
 
         document.getElementById('victima').value = d.victima || "";
         document.getElementById('imputado').value = d.imputado || "";
@@ -1108,6 +1734,7 @@
         actualizarVisibilidadLabor();
         actualizarVisibilidadAccidentologia();
         actualizarVisibilidadDatosPU();
+        actualizarVisibilidadDatosDossier();
 
         window.scrollTo({top: 0, behavior: 'smooth'});
     }
