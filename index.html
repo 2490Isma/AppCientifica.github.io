@@ -125,6 +125,8 @@
         .splash-clock { color: #25D366; margin-top: 8px; font-size: 0.85rem; font-weight: bold; letter-spacing: 0.5px; }
         .reloj-app { text-align: center; font-size: 0.75rem; font-weight: bold; color: #007bff; margin-top: 4px; margin-bottom: 8px; }
         .btn-wa { background-color: #25D366; color: white; padding: 16px; border: none; border-radius: 8px; font-weight: bold; width: 100%; margin-top: 20px; cursor: pointer; font-size: 1rem; text-transform: uppercase; }
+        .btn-cloud { background-color: #4285F4; color: white; padding: 14px; border: none; border-radius: 8px; font-weight: bold; width: 100%; margin-top: 10px; cursor: pointer; font-size: 0.95rem; text-transform: uppercase; }
+        .btn-cloud:disabled { opacity: 0.65; cursor: wait; }
         .btn-pdf { background-color: #d9534f; color: white; padding: 12px; border: none; border-radius: 8px; font-weight: bold; width: 100%; margin-top: 10px; cursor: pointer; font-size: 0.9rem; text-transform: uppercase; }
         .btn-word { background-color: #007bff; color: white; padding: 12px; border: none; border-radius: 8px; font-weight: bold; width: 100%; margin-top: 5px; cursor: pointer; font-size: 0.9rem; text-transform: uppercase; }
         .btn-reset { background-color: #f8f9fa; color: #d9534f; border: 1px solid #ccc; padding: 8px; border-radius: 4px; width: 100%; margin-top: 10px; font-size: 0.7rem; font-weight: bold;}
@@ -259,7 +261,7 @@
              mover los campos de arriba al ir completando la labor pericial -->
         <button type="button" id="btnAddActa" class="btn-add-acta" onclick="agregarBloqueActa()">➕ Agregar otra acta / intervención (L.E.F / A.R.A)</button>
         <div id="contenedor-actas-nuevas"></div>
-
+        <button type="button" class="btn-cloud" id="btnSubirNube" onclick="subirExtractoNube()">☁️ SUBIR EXTRACTO A LA NUBE</button>
         <button class="btn-wa" id="btnMainWA" onclick="enviar()">🚀 ENVIAR WHATSAPP</button>
         <div id="btn-pdf-container">
             <button class="btn-pdf" onclick="generarPDF()">📄 EXTRACTO (IMPRIMIR / DESCARGAR PDF)</button>
@@ -1560,19 +1562,65 @@
         const a = document.createElement('a'); a.href = url; a.download = nombreArchivo; document.body.appendChild(a); a.click(); document.body.removeChild(a); URL.revokeObjectURL(url);
     }
 
-    function enviar() {
+    // ============ GOOGLE DRIVE / NUBE ============
+    // Pegá aquí la URL /exec de tu Web App de Google Apps Script.
+    const GOOGLE_DRIVE_WEBAPP_URL = "PEGAR_AQUI_URL_DE_APPS_SCRIPT";
+
+    function construirExtractoTexto() {
         const checks = Array.from(document.querySelectorAll('#gridStickers input:checked')).map(c => c.value);
         const stickersStr = checks.join("") || "👮";
         const d = construirEstructuraCampos();
-
-        // Se manda siempre el reporte completo (tanto en el envío inicial como al enviar
-        // la labor pericial luego de una edición), para que quede el texto entero en WhatsApp.
         let msg = `${stickersStr}\n*C.C.R. CENTRO*\n*D.D.P.C. LA PLATA - S.P.D BRANDSEN*\n*CARATULA:* ${d.car || "SIN CARÁTULA"}\n*FECHA:* ${d.fecha}\n*DOC:* ${d.dco}\n*LEF/ARA:* ${d.lef}`;
         if (d.hayLefsExtra) msg += `\n*LEF ADICIONAL:* ${d.lefsExtra}`;
         msg += `\n*HORA DE SOLICITUD:* ${d.h_sol}\n*HORA DE SALIDA:* ${d.h_sal}\n*HORA DE FINALIZACIÓN:* ${d.h_fin}\n*VÍCTIMA:* ${d.vic}\n*IMPUTADO:* ${d.imp}\n*SECCIONAL ACTUANTE:* ${d.seccional}\n*UFI INTERVINIENDO:* ${d.ufi}\n*LUGAR DEL HECHO:* ${d.lugar}\n*GPS:* ${d.gps}\n*SÍNTESIS DEL HECHO:* ${d.sin}`;
         if (d.laborWA) msg += `\n*${d.tituloLabor}:*\n${d.laborWA}`;
-
         msg += `\n\n${FIRMA_WA}`;
+        return msg;
+    }
+
+    function nombreArchivoExtractoNube(d) {
+        const acta1 = d.actasRaw && d.actasRaw[0] ? d.actasRaw[0] : {};
+        const lef = acortarAnioLEF(acta1.lef || "SIN-LEF");
+        const caratula = aFormatoTituloConConectores(document.getElementById('caratula').value || "SIN-CARATULA");
+        const apellido = apellidoVictimaParaArchivo();
+        const fecha = formatearFechaSalida(acta1.fechaRaw || "").replace(/\//g, '-');
+        return `EXTRACTO ${lef} ${caratula} – ${apellido} ${fecha}.txt`.replace(/[\\/:*?"<>|]/g, '-');
+    }
+
+    async function subirExtractoNube() {
+        if (!GOOGLE_DRIVE_WEBAPP_URL || GOOGLE_DRIVE_WEBAPP_URL === "PEGAR_AQUI_URL_DE_APPS_SCRIPT") {
+            alert("Primero configurá la URL de Google Apps Script en GOOGLE_DRIVE_WEBAPP_URL.");
+            return;
+        }
+        const btn = document.getElementById('btnSubirNube');
+        const textoOriginal = btn.innerText;
+        btn.disabled = true;
+        btn.innerText = "⏳ SUBIENDO EXTRACTO...";
+        try {
+            const d = construirEstructuraCampos();
+            const contenido = construirExtractoTexto();
+            const nombre = nombreArchivoExtractoNube(d);
+            await fetch(GOOGLE_DRIVE_WEBAPP_URL, {
+                method: "POST",
+                mode: "no-cors",
+                headers: { "Content-Type": "text/plain;charset=utf-8" },
+                body: JSON.stringify({ nombre, contenido })
+            });
+            alert("✅ Extracto enviado a Google Drive.");
+        } catch (error) {
+            console.error(error);
+            alert("❌ No se pudo enviar el extracto a la nube: " + error.message);
+        } finally {
+            btn.disabled = false;
+            btn.innerText = textoOriginal;
+        }
+    }
+
+    function enviar() {
+        const checks = Array.from(document.querySelectorAll('#gridStickers input:checked')).map(c => c.value);
+        const d = construirEstructuraCampos();
+        // Se manda el mismo extracto completo que se guarda en Drive.
+        const msg = construirExtractoTexto();
 
         window.open("https://wa.me/?text=" + encodeURIComponent(msg));
 
