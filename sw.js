@@ -1,60 +1,32 @@
-const CACHE_NAME = 'app-cientifica-v10'; // Multi-acta + PWA
+const CACHE_NAME = 'app-cientifica-v1';
 const ASSETS = [
-  './',
-  './index.html',
-  './manifest.json',
-  './icon-192.png',
-  './icon-512.png'
+  '/AppCientifica.github.io/',
+  '/AppCientifica.github.io/index.html',
+  '/AppCientifica.github.io/manifest.json'
 ];
 
-// 1. Instalación y actualización forzada
-self.addEventListener('install', (event) => {
+self.addEventListener('install', (e) => {
+  e.waitUntil(
+    caches.open(CACHE_NAME).then((cache) => cache.addAll(ASSETS))
+  );
   self.skipWaiting();
-  event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => {
-      return cache.addAll(ASSETS);
-    })
-  );
 });
 
-// 2. Eliminación de cachés antiguas de la memoria del navegador
-self.addEventListener('activate', (event) => {
-  event.waitUntil(
-    caches.keys().then((cacheNames) => {
-      return Promise.all(
-        cacheNames.map((cache) => {
-          if (cache !== CACHE_NAME) {
-            console.log('Borrando caché antigua:', cache);
-            return caches.delete(cache);
-          }
+self.addEventListener('activate', (e) => {
+  e.waitUntil(
+    caches.keys().then((keys) =>
+      Promise.all(
+        keys.map((key) => {
+          if (key !== CACHE_NAME) return caches.delete(key);
         })
-      );
-    }).then(() => clients.claim())
+      )
+    )
   );
+  self.clients.claim();
 });
 
-// 3. ESTRATEGIA: Network-First (Intenta internet, si falla usa caché)
-self.addEventListener('fetch', (event) => {
-  // Solo interceptamos peticiones GET normales de nuestro propio sitio
-  if (event.request.method !== 'GET' || !event.request.url.startsWith(self.location.origin)) {
-    return;
-  }
-
-  event.respondWith(
-    fetch(event.request)
-      .then((networkResponse) => {
-        // Si hay internet, guardamos la copia nueva y la mostramos
-        if (networkResponse && networkResponse.status === 200) {
-          const responseToCache = networkResponse.clone();
-          caches.open(CACHE_NAME).then((cache) => {
-            cache.put(event.request, responseToCache);
-          });
-        }
-        return networkResponse;
-      })
-      .catch(() => {
-        // Si estás sin señal (Offline), carga el archivo guardado
-        return caches.match(event.request);
-      })
+self.addEventListener('fetch', (e) => {
+  e.respondWith(
+    caches.match(e.request).then((res) => res || fetch(e.request))
   );
 });
